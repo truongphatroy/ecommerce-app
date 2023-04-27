@@ -1,7 +1,7 @@
 import React from "react";
 import Banner from "../component/Banner";
 import Category from "../component/Category";
-import ListItem from "../component/ListItem";
+import ListImage from "../component/ListImage";
 import Other from "../component/Other";
 
 const HomePage = () => {
@@ -9,7 +9,7 @@ const HomePage = () => {
     <div>
       <Banner />
       <Category />
-      <ListItem />
+      <ListImage />
       <Other />
     </div>
   );
