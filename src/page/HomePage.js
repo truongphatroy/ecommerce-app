@@ -2,7 +2,7 @@ import React from "react";
 import Banner from "../component/Banner";
 import Category from "../component/Category";
 import ListImage from "../component/ListImage";
-import Other from "../component/Other";
+import OtherInfo from "../component/OtherInfo";
 
 const HomePage = () => {
   return (
@@ -10,7 +10,7 @@ const HomePage = () => {
       <Banner />
       <Category />
       <ListImage />
-      <Other />
+      <OtherInfo />
     </div>
   );
 };

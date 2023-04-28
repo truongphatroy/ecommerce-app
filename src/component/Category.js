@@ -1,5 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import Card from "react-bootstrap/Card";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
 import classes from "./Category.module.scss";
 
 import img1 from "../image/product_1.png";
@@ -13,28 +16,45 @@ const Category = () => {
   const handleClick = () => {
     navigate("shop");
   };
-
+  const images = [img1, img2, img3, img4, img5];
   return (
+    // use boostrap for render image card
     <div className={classes.CategoryCover}>
       <p>CAREFULLY CREATED COLLECTIONS</p>
       <h1>BROWSE OUR CATEGORIES</h1>
-      <div className={classes.Category}>
-        <div className={classes.CategoryItem1}>
-          <img onClick={handleClick} src={img1}></img>
-        </div>
-        <div className={classes.CategoryItem2}>
-          <img onClick={handleClick} src={img2}></img>
-        </div>
-        <div className={classes.CategoryItem3}>
-          <img onClick={handleClick} src={img3}></img>
-        </div>
-        <div className={classes.CategoryItem4}>
-          <img onClick={handleClick} src={img4}></img>
-        </div>
-        <div className={classes.CategoryItem5}>
-          <img onClick={handleClick} src={img5}></img>
-        </div>
-      </div>
+      {/* first row */}
+      <Row xs={1} md={2} className='g-4'>
+        {Array.from({ length: 2 }).map((_, idx) => (
+          <Col key={idx}>
+            <Card className={classes.CategoryCard}>
+              <Card.Img
+                src={images[idx]}
+                variant='top'
+                className={classes.Category}
+                onClick={handleClick}
+              />
+              <Card.Body></Card.Body>
+            </Card>
+          </Col>
+        ))}
+      </Row>
+
+      {/* second row */}
+      <Row xs={1} md={3} className='g-4'>
+        {Array.from({ length: 3 }).map((_, idx) => (
+          <Col key={idx}>
+            <Card className={classes.CategoryCard}>
+              <Card.Img
+                src={images[idx + 2]}
+                variant='top'
+                className={classes.Category}
+                onClick={handleClick}
+              />
+              <Card.Body></Card.Body>
+            </Card>
+          </Col>
+        ))}
+      </Row>
     </div>
   );
 };

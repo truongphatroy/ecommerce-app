@@ -7,7 +7,7 @@ export const getData = () => async (dispatch) => {
   dispatch({ type: "FETCH_IMAGE_REQUEST" });
   try {
     const response = await axios.get(urlGetImage);
-    console.log(response);
+    // console.log(response);
 
     dispatch({
       type: "FETCH_IMAGE_SUCCESS",

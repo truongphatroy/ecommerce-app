@@ -11,7 +11,7 @@ const reducerListImage = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        users: action.payload,
+        ListImage: action.payload,
       };
     case "FETCH_IMAGE_FAILURE":
       return {
