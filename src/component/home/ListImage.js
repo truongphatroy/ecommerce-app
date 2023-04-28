@@ -10,13 +10,18 @@ import classes from "./ListImage.module.scss";
 
 const ListImage = () => {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getData());
+  }, [dispatch]);
+
   const imageList = useSelector((state) =>
     // access to state of store and get 8 first elements
     state.ListImageInfo?.ListImage?.slice(0, 8)
   );
 
   const showModal = useSelector((state) => state.Popup.isPopup);
-  console.log(showModal);
+  // console.log(showModal);
 
   const handlOnclick = (event) => {
     if (imageList) {
@@ -24,10 +29,6 @@ const ListImage = () => {
       dispatch(showPopup(selectedItem));
     }
   };
-
-  useEffect(() => {
-    dispatch(getData());
-  }, [dispatch]);
 
   // use boostrap to render image list
   if (imageList && imageList?.length > 0) {
