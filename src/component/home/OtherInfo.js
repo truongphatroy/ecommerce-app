@@ -1,5 +1,6 @@
 import React from "react";
-import Card from "react-bootstrap/Card";
+
+// use react-bootstrap
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
@@ -31,7 +32,7 @@ const OtherInfo = () => {
       </div>
       <div className='d-flex justify-content-between'>
         <div className={classes.context}>
-          <h5>LET'S BE FRIENDS!</h5>
+          <h1>LET'S BE FRIENDS!</h1>
           <p>Nisi nisi tempor consequat laboris nisi</p>
         </div>
         <Form className='d-flex align-items-center'>

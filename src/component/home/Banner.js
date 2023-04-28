@@ -2,7 +2,8 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 import classes from "./Banner.module.scss";
-import bannerImage from "../image/banner1.jpg";
+// import bannerImage from "../image/banner1.jpg";
+import bannerImage from "../../image/banner1.jpg";
 
 const Banner = () => {
   const navigate = useNavigate();

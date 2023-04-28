@@ -1,6 +1,9 @@
-const initialState = { ListImage: null, loading: false, error: null };
+/* CREATE INITIAL VALUE AND REDUCER */
 
-const reducerListImage = (state = initialState, action) => {
+// For image list
+const initialState_ListImage = { ListImage: null, loading: false, error: null };
+
+export const reducerListImage = (state = initialState_ListImage, action) => {
   switch (action.type) {
     case "FETCH_IMAGE_REQUEST":
       return {
@@ -24,4 +27,22 @@ const reducerListImage = (state = initialState, action) => {
   }
 };
 
-export default reducerListImage;
+// For Popup
+const initialState_Popup = { isPopup: false, pupupData: null };
+export const reducerPopup = (state = initialState_Popup, action) => {
+  switch (action.type) {
+    case "SHOW_POPUP":
+      return {
+        ...state,
+        isPopup: true,
+        pupupData: action.payload,
+      };
+    case "HIDE_POPUP":
+      return {
+        ...state,
+        isPopup: false,
+      };
+    default:
+      return state;
+  }
+};

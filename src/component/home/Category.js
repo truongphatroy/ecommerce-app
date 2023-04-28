@@ -5,11 +5,11 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import classes from "./Category.module.scss";
 
-import img1 from "../image/product_1.png";
-import img2 from "../image/product_2.png";
-import img3 from "../image/product_3.png";
-import img4 from "../image/product_4.png";
-import img5 from "../image/product_5.png";
+import img1 from "../../image/product_1.png";
+import img2 from "../../image/product_2.png";
+import img3 from "../../image/product_3.png";
+import img4 from "../../image/product_4.png";
+import img5 from "../../image/product_5.png";
 
 const Category = () => {
   const navigate = useNavigate();

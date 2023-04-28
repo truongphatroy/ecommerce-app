@@ -1,5 +1,6 @@
 .OtherInfo {
   margin-bottom: 190px;
+  margin-top: 1.2rem;
   .OtherCard {
     background-color: rgba(203, 208, 209, 0.2);
     color: rgb(0, 0, 0, 0.5);
@@ -22,8 +23,12 @@
   .context {
     margin-top: 1.5rem;
     p {
-      font-size: 0.8rem;
       color: rgb(0, 0, 0, 0.5);
+      font-size: 0.9rem;
+    }
+    h1 {
+      font-size: 1.4rem;
+      color: rgb(0, 0, 0, 0.8);
     }
   }
   .input {

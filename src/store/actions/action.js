@@ -1,3 +1,6 @@
+/* ACTION OF REDUX STORE */
+
+// For async action to call API
 import axios from "axios";
 
 const urlGetImage =
@@ -16,4 +19,21 @@ export const getData = () => async (dispatch) => {
   } catch (error) {
     dispatch({ type: "FETCH_IMAGE_FAILURE", payload: error.message });
   }
+};
+
+// For Show Popup
+export const showPopup = (popupData) => {
+  console.log(11);
+
+  return {
+    type: "SHOW_POPUP",
+    payload: popupData,
+  };
+};
+
+// For Show Popup
+export const hidePopup = () => {
+  return {
+    type: "HIDE_POPUP",
+  };
 };
