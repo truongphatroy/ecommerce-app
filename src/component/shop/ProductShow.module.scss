@@ -1,10 +1,17 @@
 .ProductShow {
-  display: flex;
-  .ProductShowSidebar {
-    width: 200px;
-    border-right: 1px solid black;
-    height: 100vh;
-  }
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  gap: 10px;
+  color: rgb(0, 0, 0, 0.8);
+  margin-top: 1rem;
+
   .ProductShowContent {
+    grid-column: 2 / 5;
+    margin-top: 1rem;
+    .sidebarList {
+      text-decoration: none;
+      list-style-type: none;
+      //  justify-content: center;
+    }
   }
 }

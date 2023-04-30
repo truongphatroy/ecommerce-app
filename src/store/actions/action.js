@@ -23,8 +23,6 @@ export const getData = () => async (dispatch) => {
 
 // For Show Popup
 export const showPopup = (popupData) => {
-  console.log(11);
-
   return {
     type: "SHOW_POPUP",
     payload: popupData,

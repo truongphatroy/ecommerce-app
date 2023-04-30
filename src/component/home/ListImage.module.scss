@@ -10,18 +10,4 @@
       margin-bottom: 1rem;
     }
   }
-  .imageCard {
-    border: none;
-    transition: transform 0.5s ease-in-out;
-    &:hover {
-      transform: scale(1.1);
-      cursor: pointer;
-    }
-  }
-  .Cardtitle {
-    font-size: 1rem;
-  }
-  .Cardtext {
-    color: rgb(0, 0, 0, 0.4);
-  }
 }

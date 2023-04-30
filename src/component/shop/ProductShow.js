@@ -1,84 +1,168 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getData, showPopup } from "../../store/actions/action";
-import Card from "react-bootstrap/Card";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
-
+import Sidebar from "./Sidebar";
+import ProductCard from "../home/ProductCard";
+import Pagination from "./Pagination";
+import PaginationTitle from "./PaginationTitle";
 import classes from "./ProductShow.module.scss";
+
 const ProductShow = () => {
   const dispatch = useDispatch();
+  const [categoryProduct, setCategoryProduct] = useState("");
+  const [currentpage, setCurrentpage] = useState(1);
 
+  // refer to form for searching
+  const inputRef = useRef();
+  const selectedRef = useRef();
+
+  // accsess all product state
+  const imageData = useSelector((state) => state?.ListImageInfo?.ListImage);
+  console.log(imageData);
+
+  let filterData = [];
+  let dataToShow = [];
+  let totalPage = 1;
+  let startProduct = 0;
+  let endProduct = 0;
+
+  // Loading Product list again when start going to page
   useEffect(() => {
     dispatch(getData());
   }, [dispatch]);
 
-  const imageList = useSelector(
-    (state) =>
-      // access to state of store and get 8 first elements
-      state?.ListImageInfo?.ListImage
-  );
-
-  console.log(imageList);
-  const handlOnclick = (event) => {
-    if (imageList) {
-      const selectedItem = imageList?.filter((e) => e._id.$oid === event);
-      dispatch(showPopup(selectedItem));
-    }
+  // Filter for click on category button in sidebar
+  const handleSelectedSideBar = (event) => {
+    // return input form to initail value
+    inputRef.current.value = "";
+    selectedRef.current.value = "all";
+    setCategoryProduct(event);
+    setCurrentpage(1);
   };
-  if (imageList && imageList?.length > 0) {
-    return (
-      <div className={classes.ProductShow}>
-        <div className={classes.ProductShowSidebar}>
-          <nav id='sidebar' className='active'>
-            <div className='sidebar-header' id='sidebar-title'>
-              <h4>CATEGORIES</h4>
-            </div>
-            <div className='sidebar-header'>
-              <h5>APPLE</h5>
-              <p>All</p>
-            </div>
-            <ul className={classes.sidebarList}>
-              <li className=''>IPHONE & MAC</li>
-              <li className=''>IPhone</li>
-              <li className=''>Ipad</li>
-              <li className=''>Macbook</li>
-              <li className=''>WIRELESS</li>
-              <li className=''>Airpod</li>
-              <li className=''>Watch</li>
-              <li className=''>OTHER</li>
-              <li className=''>Mouse</li>
-              <li className=''>Keyboard</li>
-              <li className=''>Other</li>
-            </ul>
-          </nav>
+
+  // Filter for inputting
+  const handleEnteredCategory = (event) => {
+    selectedRef.current.value = "all";
+    setCategoryProduct(event.target.value);
+    setCurrentpage(1);
+  };
+
+  // Filter for selection
+  const handleSelectedCategory = (event) => {
+    inputRef.current.value = "";
+    console.log(event);
+    console.log(event.target.value);
+
+    setCategoryProduct(event.target.value);
+    setCurrentpage(1);
+  };
+
+  if (imageData && imageData?.length > 0) {
+    // when openning page or show all product
+    if (!categoryProduct || categoryProduct === "all") {
+      filterData = imageData;
+    } else {
+      // before use filter show all
+      filterData = imageData?.filter((item) =>
+        item?.category.includes(categoryProduct)
+      );
+    }
+
+    // calculate data for Pagination component
+    if (filterData) {
+      totalPage = Math.ceil(filterData.length / 6);
+      let startIndex = (currentpage - 1) * 6;
+      let endInded = startIndex + 6;
+      // cut element to show in a page
+      dataToShow = filterData.slice(startIndex, endInded);
+
+      // to show in PaginationTitle component
+      if (totalPage == 0) {
+        // No found product
+        startProduct = 0;
+        endProduct = 0;
+      } else if (currentpage == totalPage) {
+        //final page
+        startProduct = (currentpage - 1) * 6 + 1;
+        endProduct = filterData.length;
+      } else {
+        startProduct = (currentpage - 1) * 6 + 1;
+        endProduct = dataToShow.length;
+      }
+
+      // handle change to next page
+      const onPageNextChange = (page) => {
+        if (currentpage < totalPage) {
+          setCurrentpage((preState) => preState + 1);
+        }
+      };
+
+      // handle change to prev page
+      const onPagePreChange = () => {
+        if (currentpage >= 2) {
+          setCurrentpage((preState) => preState - 1);
+        }
+      };
+
+      return (
+        <div className={classes.ProductShow}>
+          {/* sidebar */}
+          <Sidebar onClick={handleSelectedSideBar} />
+          {/* content */}
+          <div className={classes.ProductShowContent}>
+            {/* form */}
+            <form className='d-flex justify-content-between gap-5 '>
+              <div className='input-group mb-3 '>
+                <input
+                  onChange={handleEnteredCategory}
+                  ref={inputRef}
+                  type='text'
+                  className='form-control'
+                  placeholder='Username'
+                  aria-label='Username'
+                  aria-describedby='basic-addon1'
+                />
+              </div>
+              <select
+                ref={selectedRef}
+                onChange={handleSelectedCategory}
+                className='form-select form-select-lg mb-3'
+                aria-label='.form-select-lg example'
+              >
+                <option defaultValue value='all'>
+                  Open this select menu
+                </option>
+                <option value='iphone'>iphone</option>
+                <option value='ipad'>ipad</option>
+                <option value='airpod'>airpod</option>
+                <option value='watch'>watch</option>
+                <option value='other'>other</option>
+              </select>
+            </form>
+            {/* pagination */}
+            <PaginationTitle
+              startProduct={startProduct}
+              endProduct={endProduct}
+              totalProduct={filterData.length}
+            />
+            <Pagination
+              dataToShow={dataToShow}
+              totalPage={totalPage}
+              onPageNextChange={onPageNextChange}
+              onPagePreChange={onPagePreChange}
+              currentpage={currentpage}
+            />
+
+            {/* Show 4 product (3pcs / row) */}
+            <ProductCard
+              numberOfCard={3}
+              imageList={dataToShow?.slice(0, 6)}
+              linkDetail={false}
+            />
+          </div>
         </div>
-        <div className={classes.ProductShowContent}>
-          <Row xs={1} md={3} className='g-4'>
-            {imageList.map((item) => (
-              <Col key={item._id.$oid}>
-                <Card
-                  className={classes.imageCard}
-                  onClick={() => handlOnclick(item._id.$oid)}
-                >
-                  <Card.Img variant='top' src={item.img1} />
-                  <Card.Body>
-                    <Card.Title className={classes.Cardtitle}>
-                      {item.name}
-                    </Card.Title>
-                    <Card.Text className={classes.Cardtext}>
-                      {/* change price value to number, after that change to vi style number */}
-                      {parseInt(item.price).toLocaleString("vi-VN")} VND
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        </div>
-      </div>
-    );
+      );
+    }
   }
 };
-
 export default ProductShow;
