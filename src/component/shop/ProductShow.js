@@ -2,8 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getData, showPopup } from "../../store/actions/action";
 import Sidebar from "./Sidebar";
-import ProductCard from "../home/ProductCard";
 import Pagination from "./Pagination";
+import ProductShowCard from "./ProductShowCard";
 import PaginationTitle from "./PaginationTitle";
 import classes from "./ProductShow.module.scss";
 
@@ -17,7 +17,7 @@ const ProductShow = () => {
   const selectedRef = useRef();
 
   // accsess all product state
-  const imageData = useSelector((state) => state?.ListImageInfo?.ListImage);
+  const imageData = useSelector((state) => state?.ProductList?.ListImage);
   console.log(imageData);
 
   let filterData = [];
@@ -56,6 +56,11 @@ const ProductShow = () => {
     setCategoryProduct(event.target.value);
     setCurrentpage(1);
   };
+
+  // click on product to show detail
+  // const handleClickShowDetail = (event, itemId) => {
+  //   console.log("show detail");
+  // };
 
   if (imageData && imageData?.length > 0) {
     // when openning page or show all product
@@ -154,10 +159,11 @@ const ProductShow = () => {
             />
 
             {/* Show 4 product (3pcs / row) */}
-            <ProductCard
+            <ProductShowCard
               numberOfCard={3}
               imageList={dataToShow?.slice(0, 6)}
               linkDetail={false}
+              // onClick={handleClickShowDetail}
             />
           </div>
         </div>

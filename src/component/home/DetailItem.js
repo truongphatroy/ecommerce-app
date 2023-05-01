@@ -12,7 +12,8 @@ import { useSelector, useDispatch } from "react-redux";
 import classes from "./DetailItem.module.scss";
 
 function DetailItem(props) {
-  const [detailItem] = useSelector((state) => state.Popup.pupupData);
+  const [detailItem] = useSelector((state) => state.Popup.popupData);
+  console.log(detailItem);
 
   const dispatch = useDispatch();
 

@@ -1,11 +1,12 @@
 /* Combine reducer function to the rootReducer */
 
 import { combineReducers } from "redux";
-import { reducerListImage, reducerPopup } from "./reducer";
+import { reducerProductList, reducerPopup, reducerShowDetail } from "./reducer";
 
 const rootReducer = combineReducers({
-  ListImageInfo: reducerListImage,
-  Popup: reducerPopup,
+  ProductList: reducerProductList, // For image list (call API)
+  Popup: reducerPopup, // For Popup
+  ShowDetail: reducerShowDetail, // For Show detail of product
 });
 
 export default rootReducer;

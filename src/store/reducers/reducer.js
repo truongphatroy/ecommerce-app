@@ -1,9 +1,9 @@
 /* CREATE INITIAL VALUE AND REDUCER */
 
-// For image list
+// For image list (call API)
 const initialState_ListImage = { ListImage: null, loading: false, error: null };
 
-export const reducerListImage = (state = initialState_ListImage, action) => {
+export const reducerProductList = (state = initialState_ListImage, action) => {
   switch (action.type) {
     case "FETCH_IMAGE_REQUEST":
       return {
@@ -28,19 +28,36 @@ export const reducerListImage = (state = initialState_ListImage, action) => {
 };
 
 // For Popup
-const initialState_Popup = { isPopup: false, pupupData: null };
+const initialState_Popup = { isPopup: false, popupData: null };
 export const reducerPopup = (state = initialState_Popup, action) => {
   switch (action.type) {
     case "SHOW_POPUP":
       return {
         ...state,
         isPopup: true,
-        pupupData: action.payload,
+        popupData: action.payload,
       };
     case "HIDE_POPUP":
       return {
         ...state,
         isPopup: false,
+      };
+    default:
+      return state;
+  }
+};
+
+// For Show detail of product
+const iniitialState_ShowDetail = { category: "", itemId: "" };
+export const reducerShowDetail = (state = iniitialState_ShowDetail, action) => {
+  console.log(action);
+
+  switch (action.type) {
+    case "SHOW_DETAIL":
+      return {
+        ...state,
+        category: action.payload.category,
+        itemId: action.payload.itemId,
       };
     default:
       return state;

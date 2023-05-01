@@ -35,3 +35,11 @@ export const hidePopup = () => {
     type: "HIDE_POPUP",
   };
 };
+
+// For Show Detail (related /"shop" and /"detail" page)
+export const showDetail = (category, itemId) => {
+  return {
+    type: "SHOW_DETAIL",
+    payload: { category, itemId },
+  };
+};
