@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { showDetail } from "../../store/actions/action";
 import { Link } from "react-router-dom";
 
@@ -12,11 +12,11 @@ import classes from "./ProductShowCard.module.scss";
 const ProductShowCard = ({ numberOfCard, imageList }) => {
   const dispatch = useDispatch();
   function handleclick(category, itemId) {
-    console.log(category, itemId);
     // go to the head of page
     window.scrollTo(0, 0);
     dispatch(showDetail(category, itemId));
   }
+  const select = useSelector((state) => state);
 
   if (imageList && imageList?.length > 0) {
     return (

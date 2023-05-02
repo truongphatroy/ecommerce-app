@@ -1,12 +1,21 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-
+import { useSelector, useDispatch } from "react-redux";
+import { AiFillCaretDown } from "react-icons/ai";
+import { activeInfor } from "../../storage/storage";
 import classes from "./Navbar.module.scss";
 
+import { deleteDataInStorage, keyOfActiveUser } from "../../storage/storage";
+
 const Navbar = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const loginStatus = useSelector((state) => state.Login.stateLogin);
   const location = useLocation();
-  const HandleNavigate = (event) => {
+  console.log(activeInfor);
+
+  // navigate for Navbar
+  const handleNavigate = (event) => {
     switch (event.target.innerHTML) {
       case "Home":
         return navigate("/");
@@ -16,18 +25,31 @@ const Navbar = () => {
         return navigate("/");
       case "Cart":
         return navigate("cart");
-      case "Login":
-        return navigate("login");
+      case "Login": {
+        if (loginStatus) {
+          alert("You are active. Please logout before Login!");
+          return;
+        }
+        return navigate("signin");
+      }
     }
   };
+
+  // logout
+  const handleLogout = () => {
+    // delete active data in Local storage
+    deleteDataInStorage(keyOfActiveUser);
+    // update state by redux
+    dispatch({ type: "ON_LOGOUT" });
+  };
+
   return (
-    // <nav className='navbar navbar-expand-lg navbar-light bg-light'>
     <div className={classes.Navbar}>
       <ul className={classes.list}>
         <li className={classes.listItem}>
           <button
             type='button'
-            onClick={HandleNavigate}
+            onClick={handleNavigate}
             className={location.pathname === "/" ? `${classes.active}` : ""}
           >
             Home
@@ -36,7 +58,7 @@ const Navbar = () => {
         <li className={classes.listItem}>
           <button
             type='button'
-            onClick={HandleNavigate}
+            onClick={handleNavigate}
             className={location.pathname === "/shop" ? `${classes.active}` : ""}
           >
             Shop
@@ -45,7 +67,7 @@ const Navbar = () => {
       </ul>
       <ul className={classes.list}>
         <li className={classes.listItem}>
-          <button type='button' onClick={HandleNavigate}>
+          <button type='button' onClick={handleNavigate}>
             BOUTIQUE
           </button>
         </li>
@@ -54,7 +76,7 @@ const Navbar = () => {
         <li className={classes.listItem}>
           <button
             type='button'
-            onClick={HandleNavigate}
+            onClick={handleNavigate}
             className={location.pathname === "/cart" ? `${classes.active}` : ""}
           >
             <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 512'>
@@ -66,7 +88,7 @@ const Navbar = () => {
         <li className={classes.listItem}>
           <button
             type='button'
-            onClick={HandleNavigate}
+            onClick={handleNavigate}
             className={
               location.pathname === "/login" ? `${classes.active}` : ""
             }
@@ -78,9 +100,23 @@ const Navbar = () => {
             >
               <path d='M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z' />
             </svg>
-            <span>Login</span>
+            <span>{loginStatus ? activeInfor.fullName : "Login"}</span>
+            {loginStatus && <AiFillCaretDown />}
           </button>
         </li>
+        {loginStatus && (
+          <li className={classes.listItem}>
+            <button
+              type='button'
+              onClick={handleLogout}
+              className={
+                location.pathname === "/login" ? `${classes.active}` : ""
+              }
+            >
+              <span>( Logout )</span>
+            </button>
+          </li>
+        )}
       </ul>
     </div>
   );

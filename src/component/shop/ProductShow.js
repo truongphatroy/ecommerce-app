@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getData, showPopup } from "../../store/actions/action";
+import { getData } from "../../store/actions/action";
 import Sidebar from "./Sidebar";
 import Pagination from "./Pagination";
 import ProductShowCard from "./ProductShowCard";

@@ -1,3 +1,5 @@
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import HomePage from "./page/HomePage";
@@ -5,9 +7,10 @@ import ShopPage from "./page/ShopPage";
 import DetailPage from "./page/DetailPage";
 import CartPage from "./page/CartPage";
 import CheckoutPage from "./page/CheckoutPage";
-import LoginPage from "./page/LoginPage";
-import RegisterPage from "./page/RegisterPage";
+import SignInPage from "./page/SignInPage";
+import SignUpPage from "./page/SignUpPage";
 import RootLayout from "./page/RootLayout";
+import { activeInfor } from "./storage/storage";
 
 // create a custom route
 const router = createBrowserRouter([
@@ -20,13 +23,21 @@ const router = createBrowserRouter([
       { path: "detail/:productId", element: <DetailPage /> },
       { path: "cart", element: <CartPage /> },
       { path: "checkout", element: <CheckoutPage /> },
-      { path: "login", element: <LoginPage /> },
-      { path: "register", element: <RegisterPage /> },
     ],
   },
+  { path: "signin", element: <SignInPage /> },
+  { path: "signup", element: <SignUpPage /> },
 ]);
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    console.log(activeInfor);
+    console.log(typeof activeInfor);
+
+    if (activeInfor?.isSignin) dispatch({ type: "RESTORE", payload: true });
+  }, []);
+
   return <RouterProvider router={router} />;
 }
 

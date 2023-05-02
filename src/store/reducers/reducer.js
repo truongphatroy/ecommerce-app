@@ -50,14 +50,39 @@ export const reducerPopup = (state = initialState_Popup, action) => {
 // For Show detail of product
 const iniitialState_ShowDetail = { category: "", itemId: "" };
 export const reducerShowDetail = (state = iniitialState_ShowDetail, action) => {
-  console.log(action);
-
   switch (action.type) {
     case "SHOW_DETAIL":
       return {
         ...state,
         category: action.payload.category,
         itemId: action.payload.itemId,
+      };
+    default:
+      return state;
+  }
+};
+
+// For update login status
+const initialState_Login = { stateLogin: false };
+export const reducerLogin = (state = initialState_Login, action) => {
+  console.log(state.stateLogin);
+  console.log(action.type);
+
+  switch (action.type) {
+    case "ON_LOGIN":
+      return {
+        ...state,
+        stateLogin: true,
+      };
+    case "ON_LOGOUT":
+      return {
+        ...state,
+        stateLogin: false,
+      };
+    case "RESTORE":
+      return {
+        ...state,
+        stateLogin: action.payload,
       };
     default:
       return state;
