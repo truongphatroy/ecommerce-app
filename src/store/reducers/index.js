@@ -6,6 +6,7 @@ import {
   reducerPopup,
   reducerShowDetail,
   reducerLogin,
+  reducerCart,
 } from "./reducer";
 
 const rootReducer = combineReducers({
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   Popup: reducerPopup, // For Popup
   ShowDetail: reducerShowDetail, // For Show detail of product
   Login: reducerLogin, // For login status
+  Cart: reducerCart, // for Cart
 });
 
 export default rootReducer;

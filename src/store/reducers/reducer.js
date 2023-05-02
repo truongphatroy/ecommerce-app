@@ -88,3 +88,18 @@ export const reducerLogin = (state = initialState_Login, action) => {
       return state;
   }
 };
+
+// For cart
+const iniitialState_Cart = { listCart: [], totalAmount: 0 };
+export const reducerCart = (state = iniitialState_Cart, action) => {
+  switch (action.type) {
+    case "ADD_CART":
+      return { ...state, listCart: action.payload };
+    case "UPDATE_CART":
+      return { ...state, listCart: action.payload };
+    case "DELETE_CART":
+      return { ...state, listCart: action.payload };
+    default:
+      return state;
+  }
+};
