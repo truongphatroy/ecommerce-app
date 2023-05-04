@@ -29,7 +29,12 @@ const Signup = () => {
 
       isValidate = false;
     }
-    // Check emial was registered or not
+    if (newUser?.email.includes("@") !== true) {
+      error += "Email has to include @! ";
+
+      isValidate = false;
+    }
+    // Check email was registered or not
     for (let i = 0; i < userArr.length; i++) {
       if (userArr[i].email === newUser?.email) {
         error += "Please use other email! ";

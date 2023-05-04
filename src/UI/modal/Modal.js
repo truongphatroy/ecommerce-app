@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import ReactDOM from "react-dom";
 import { useDispatch } from "react-redux";
-import { hidePopup } from "../../store/actions/action";
+import { hidePopup, hideDetailActiveUser } from "../../store/actions/action";
 
 import classes from "./Modal.module.scss";
 
@@ -9,6 +9,7 @@ const Backdrop = (props) => {
   const dispatch = useDispatch();
   const hadleOnclose = () => {
     dispatch(hidePopup());
+    dispatch(hideDetailActiveUser());
   };
 
   return <div className={classes.backdrop} onClick={hadleOnclose} />;

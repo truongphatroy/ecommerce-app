@@ -1,21 +1,43 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
+import { addCart } from "../store/actions/action";
+
 import ProductShowCard from "../component/shop/ProductShowCard";
+
 import classes from "./DetailPage.module.scss";
+
+/* Component function */
 const DetailPage = () => {
+  const dispatch = useDispatch();
+  const test = useSelector((state) => state);
+  console.log(test);
+
+  /* variable of user */
+  const activeUser = useSelector(
+    // (state) => state?.ActiveUserInfo?.activeUserProfile
+    (state) => state?.Login?.activeUser?.email
+  );
+  console.log(activeUser);
+
+  /* variable for accessing to all products */
+  const productList = useSelector((state) => state?.ProductList?.ListImage);
+  console.log(productList);
+
+  /* variable of current product infor */
   const selectedProductCategory = useSelector(
     (state) => state?.ShowDetail?.category
   );
+
   const selectedProductId = useSelector((state) => state?.ShowDetail?.itemId);
-  const productList = useSelector((state) => state?.ProductList?.ListImage);
-  console.log(productList);
-  console.log(selectedProductCategory);
-  // console.log(selectedProductId);
+  console.log(selectedProductId);
+  const [selectedProductAmount, setSelectedProductAmount] = useState(1);
 
   const selectedProduct = productList?.find(
     (product) => product?._id?.$oid === selectedProductId
   );
+  console.log(selectedProduct);
+
   const productDescription = selectedProduct?.long_desc;
 
   const productRelateList = productList?.filter(
@@ -24,9 +46,38 @@ const DetailPage = () => {
       product?._id.$oid !== selectedProductId
   );
 
+  // convert price to vi string style
   const productPrice = parseInt(selectedProduct?.price).toLocaleString("vi-VN");
 
-  let quantity = 1;
+  /* variable of login status infor */
+  const loginStatus = useSelector((state) => state.Login);
+
+  console.log(selectedProduct);
+  console.log(productList);
+  console.log(loginStatus);
+
+  const handleAddtoCart = () => {
+    let item = {
+      img: selectedProduct?.img1,
+      product: selectedProduct?.name,
+      price: parseInt(selectedProduct?.price),
+      amount: parseInt(selectedProductAmount),
+      id: selectedProduct?._id.$oid,
+      productTotalAmount:
+        parseInt(selectedProductAmount) * parseInt(selectedProduct?.price),
+      oderUser: activeUser,
+    };
+    dispatch(addCart(item));
+  };
+
+  const handleDecrease = () => {
+    if (selectedProductAmount > 1)
+      setSelectedProductAmount((preState) => preState - 1);
+  };
+  const handleIncrease = () => {
+    if (selectedProductAmount < 10)
+      setSelectedProductAmount((preState) => preState + 1);
+  };
 
   if (selectedProduct) {
     return (
@@ -56,25 +107,25 @@ const DetailPage = () => {
                 <input
                   style={{ maxWidth: "150px" }}
                   type='text'
-                  className='form-control border-0'
+                  className='form-control border-0 bg-white'
                   placeholder='QUANTITY'
-                  aria-label="Recipient's username"
-                  aria-describedby='basic-addon2'
+                  disabled
                 ></input>
                 <div className='d-flex align-items-center me-2'>
-                  <AiFillCaretLeft />
+                  <AiFillCaretLeft onClick={handleDecrease} />
                   <span className='d-flex align-items-center ms-2 me-2'>
-                    {quantity}
+                    {selectedProductAmount}
                   </span>
-                  <AiFillCaretRight />
+                  <AiFillCaretRight onClick={handleIncrease} />
                 </div>
               </div>
-              <span
-                className='input-group-text bg-dark text-light fw-light'
+              <button
+                onClick={handleAddtoCart}
+                className='btn btn-dark input-group-text text-light fw-light'
                 id='basic-addon2'
               >
                 Add to cart
-              </span>
+              </button>
             </div>
           </div>
         </div>

@@ -10,7 +10,8 @@ import CheckoutPage from "./page/CheckoutPage";
 import SignInPage from "./page/SignInPage";
 import SignUpPage from "./page/SignUpPage";
 import RootLayout from "./page/RootLayout";
-import { activeInfor } from "./storage/storage";
+import { restoreActiveStatus, restoreUserCart } from "./store/actions/action";
+import { activeInfor, getFromStorage } from "./storage/storage";
 
 // create a custom route
 const router = createBrowserRouter([
@@ -31,12 +32,31 @@ const router = createBrowserRouter([
 
 function App() {
   const dispatch = useDispatch();
+  // update active status every time start
   useEffect(() => {
-    console.log(activeInfor);
-    console.log(typeof activeInfor);
+    if (activeInfor) {
+      // restore active user
+      dispatch(restoreActiveStatus(activeInfor));
 
-    if (activeInfor?.isSignin) dispatch({ type: "RESTORE", payload: true });
-  }, []);
+      // Restore cart in local storage
+      const keyOfexistingLocalCart = `CartList__${activeInfor.email}`;
+
+      const existingLocalCart = getFromStorage(keyOfexistingLocalCart);
+
+      if (existingLocalCart) {
+        dispatch(restoreUserCart(existingLocalCart));
+      }
+    } else {
+      // Restore non-active user's cart in local storage
+      const keyOfexistingLocalCart = `CartList__undefined`;
+
+      const existingLocalCart = getFromStorage(keyOfexistingLocalCart);
+
+      if (existingLocalCart) {
+        dispatch(restoreUserCart(existingLocalCart));
+      }
+    }
+  }, [activeInfor]);
 
   return <RouterProvider router={router} />;
 }

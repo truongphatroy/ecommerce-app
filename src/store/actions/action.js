@@ -29,10 +29,25 @@ export const showPopup = (popupData) => {
   };
 };
 
-// For Show Popup
+// For Hide Popup
 export const hidePopup = () => {
   return {
     type: "HIDE_POPUP",
+  };
+};
+
+// For Show detail of active user
+export const showDetailActiveUser = (activeUser) => {
+  return {
+    type: "SHOW__ACTIVE_USER",
+    payload: activeUser,
+  };
+};
+
+// For hide detail of active user
+export const hideDetailActiveUser = () => {
+  return {
+    type: "HIDE__ACTIVE_USER",
   };
 };
 
@@ -41,5 +56,33 @@ export const showDetail = (category, itemId) => {
   return {
     type: "SHOW_DETAIL",
     payload: { category, itemId },
+  };
+};
+
+// For update login status
+export const signin = (user) => {
+  return {
+    type: "ON_LOGIN",
+    payload: user,
+  };
+};
+export const restoreActiveStatus = (state) => {
+  return {
+    type: "RESTORE",
+    payload: state,
+  };
+};
+
+// For update login status
+export const addCart = (item) => {
+  return {
+    type: "ADD_CART",
+    item: item,
+  };
+};
+export const restoreUserCart = (item) => {
+  return {
+    type: "RESTORE_CART",
+    item: item,
   };
 };

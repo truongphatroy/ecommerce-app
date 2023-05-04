@@ -2,7 +2,12 @@ import React, { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { User } from "../../storage/User";
-import { saveToStorage, keyOfActiveUser } from "../../storage/storage";
+import { restoreUserCart, signin } from "../../store/actions/action";
+import {
+  saveToStorage,
+  keyOfActiveUser,
+  getFromStorage,
+} from "../../storage/storage";
 import classes from "./Signin.module.scss";
 import bannerImage from "../../image/banner1.jpg";
 
@@ -50,22 +55,35 @@ const Signin = () => {
     // if input is OK
     if (isValidate) {
       let isSignin = false;
-      const user = new User(
+      const EnteredUser = new User(
         emailRef.current?.value,
         passwordRef.current?.value,
         isSignin
       );
       //
-      console.log(user?.signin());
-      // if found the user in userArr
-      if (user?.signin().isSignin) {
-        // update active user into Local Storage
-        saveToStorage(keyOfActiveUser, user?.signin().activeUser);
-        // update login state by redux
-        dispatch({ type: "ON_LOGIN" });
+      console.log(EnteredUser?.signin());
+      // if found the EnteredUser in userArr
+      // user test@gmail.com
+      // pass 123456789
+      if (EnteredUser?.signin().isSignin) {
+        dispatch(signin(EnteredUser?.signin()?.activeUser));
+
+        const keyOfexistingLocalCart = `CartList__${
+          signin(EnteredUser?.signin()).payload.activeUser.email
+        }`;
+
+        const existingLocalCart = getFromStorage(keyOfexistingLocalCart);
+        console.log("cart on local now", existingLocalCart);
+
+        // Restore cart in local storage
+        if (existingLocalCart) {
+          dispatch(restoreUserCart(existingLocalCart));
+          console.log("OK");
+        } else {
+          console.log("ng");
+        }
         alert("Sign in Successful!");
-        // go to home
-        navigate("/");
+        navigate("/"); // go to home
       } else {
         setErrorMessage("The entered user is invalid! Please try other.");
       }

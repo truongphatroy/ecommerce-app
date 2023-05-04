@@ -1,8 +1,10 @@
 /* handling with Local storeage */
 
 // valiable
-export const keyOfUserArr = "keyOfUserArr";
-export const keyOfActiveUser = "keyOfActiveUser";
+export const keyOfUserArr = "UserArr";
+export const keyOfActiveUser = "ActiveUser";
+
+export const keyOfCartList = "CartList";
 
 // Save to Local Storage
 export const saveToStorage = (key, value) => {
@@ -10,15 +12,14 @@ export const saveToStorage = (key, value) => {
 };
 
 // Reading data from Local Storage
-const getFromStorage = (key) => {
+export const getFromStorage = (key) => {
   return JSON.parse(localStorage.getItem(key));
 };
 
 // user array
 export const userArr = getFromStorage(keyOfUserArr) || [];
-// active array
-// export const loginStatus = getFromStorage(keyOfActiveUser) || {};
-export const activeInfor = getFromStorage(keyOfActiveUser) || {};
+// active user array
+export const activeInfor = getFromStorage(keyOfActiveUser) || false;
 
 // Delete data
 export const deleteDataInStorage = (data) => {
