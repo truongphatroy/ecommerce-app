@@ -31,7 +31,9 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  const dispatch = useDispatch();
+  console.log("33 App");
+
+  /*   const dispatch = useDispatch();
   // update active status every time start
   useEffect(() => {
     if (activeInfor) {
@@ -56,7 +58,7 @@ function App() {
         dispatch(restoreUserCart(existingLocalCart));
       }
     }
-  }, [activeInfor]);
+  }, [activeInfor]); */
 
   return <RouterProvider router={router} />;
 }

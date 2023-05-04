@@ -25,10 +25,14 @@ const ProductShow = () => {
   let totalPage = 1;
   let startProduct = 0;
   let endProduct = 0;
+  console.log("33 shop outside");
 
   // Loading Product list again when start going to page
   useEffect(() => {
+    console.log("33 shop1 dispatch");
+
     dispatch(getData());
+    console.log("33 shop2 dispatch");
   }, [dispatch]);
 
   // Filter for click on category button in sidebar

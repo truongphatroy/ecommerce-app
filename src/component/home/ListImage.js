@@ -8,10 +8,13 @@ import classes from "./ListImage.module.scss";
 
 const ListImage = () => {
   const dispatch = useDispatch();
+  console.log("33 home outside");
 
   useEffect(() => {
+    console.log("33 home dispatch");
+
     dispatch(getData());
-  }, [dispatch]);
+  }, []);
 
   const imageList = useSelector((state) =>
     // access to state of store and get 8 first elements

@@ -13,8 +13,12 @@ import { restoreActiveStatus } from "../actions/action";
 const initialState_ListImage = { ListImage: null, loading: false, error: null };
 
 export const reducerProductList = (state = initialState_ListImage, action) => {
+  console.log(111);
+
   switch (action.type) {
     case "FETCH_IMAGE_REQUEST":
+      console.log(33);
+
       return {
         ...state,
         loading: true,
