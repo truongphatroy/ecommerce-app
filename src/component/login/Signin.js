@@ -1,8 +1,9 @@
 import React, { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
-import { User } from "../../storage/User";
-import { restoreUserCart, signin } from "../../store/actions/action";
+import { checkExistingUser } from "../../storage/checkUser";
+import { updateCart, signin } from "../../store/actions/action";
+import { cartInfor } from "../../storage/storage";
 import {
   saveToStorage,
   keyOfActiveUser,
@@ -13,27 +14,28 @@ import bannerImage from "../../image/banner1.jpg";
 
 const Signin = () => {
   const navigate = useNavigate();
-  const emailRef = useRef();
-  const passwordRef = useRef();
+  const [enteredEmail, setEnterredEmail] = useState("");
+  const [enteredPassword, setEnterredPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
 
-  // const LoginStatus = useSelector((state) => state.Login.loginStatus);
-  const LoginStatus = useSelector((state) => state);
+  const test = useSelector((state) => state);
+  console.log("test", test);
+  console.log("sigin");
 
   // Validate input function
-  function validate(newUser) {
+  function validate(inputEmail, inputPassword) {
     let isValidate = true;
     let error = "";
 
     // email was input or not
-    if (newUser?.email?.trim().length === 0) {
+    if (inputEmail?.trim().length === 0) {
       error += "Email was not entered! ";
       isValidate = false;
     }
 
     // passwork was input or not
-    if (newUser?.password?.trim().length === 0) {
+    if (inputPassword?.trim().length === 0) {
       error += "Password was not entered! ";
       isValidate = false;
     }
@@ -42,54 +44,52 @@ const Signin = () => {
     return isValidate;
   }
 
+  const handleChangeEmail = (event) => {
+    setEnterredEmail(event.target.value);
+  };
+  const handleChangePassword = (event) => {
+    setEnterredPassword(event.target.value);
+  };
+
   // handling action when submit
   const handleSignin = () => {
-    const newUser = {
-      email: emailRef?.current?.value,
-      password: passwordRef?.current?.value,
-    };
-
     // validate input
-    const isValidate = validate(newUser);
+    const isValidate = validate(enteredEmail, enteredPassword);
 
-    // if input is OK
+    // if user is entered
     if (isValidate) {
-      let isSignin = false;
-      const EnteredUser = new User(
-        emailRef.current?.value,
-        passwordRef.current?.value,
-        isSignin
-      );
-      //
-      console.log(EnteredUser?.signin());
-      // if found the EnteredUser in userArr
-      // user test@gmail.com
-      // pass 123456789
-      if (EnteredUser?.signin().isSignin) {
-        dispatch(signin(EnteredUser?.signin()?.activeUser));
+      // and existing
+      if (checkExistingUser(enteredEmail, enteredPassword)) {
+        const user = checkExistingUser(enteredEmail, enteredPassword);
+        console.log("user", user);
 
-        const keyOfexistingLocalCart = `CartList__${
-          signin(EnteredUser?.signin()).payload.activeUser.email
-        }`;
+        saveToStorage(keyOfActiveUser, user);
+        dispatch(signin(user));
+        // update cart
+        console.log("store", getFromStorage(`CartList__${user?.email}`));
+        console.log("store", `CartList__${user?.email}`);
 
-        const existingLocalCart = getFromStorage(keyOfexistingLocalCart);
-        console.log("cart on local now", existingLocalCart);
-
-        // Restore cart in local storage
-        if (existingLocalCart) {
-          dispatch(restoreUserCart(existingLocalCart));
-          console.log("OK");
+        if (getFromStorage(`CartList__${user?.email}`)) {
+          const updatedCart = getFromStorage(`CartList__${user?.email}`);
+          dispatch(updateCart(updatedCart));
         } else {
-          console.log("ng");
+          // default initial value
+          const innitailUpdatedCart = {
+            items: [],
+            totalAmount: 0,
+          };
+          dispatch(updateCart(innitailUpdatedCart));
         }
-        alert("Sign in Successful!");
-        navigate("/"); // go to home
+
+        navigate("/shop"); // go to shop
       } else {
-        setErrorMessage("The entered user is invalid! Please try other.");
+        // user not existing
+        setErrorMessage("The user is not existing! Please check again.");
       }
+    } else {
+      // only show error validate potition !
     }
   };
-  console.log(LoginStatus);
 
   return (
     <div
@@ -110,14 +110,14 @@ const Signin = () => {
               Sign In
             </h1>
             <input
-              ref={emailRef}
-              type='text'
+              onChange={handleChangeEmail}
+              type='email'
               className={`mb-0 fw-light fs-5 pt-3 pb-3 ${classes.inputForm1}`}
               placeholder='Email'
             />
             <input
-              ref={passwordRef}
-              type='text'
+              onChange={handleChangePassword}
+              type='password'
               className={`mb-0 fw-light fs-5 pt-3 pb-3  ${classes.inputForm2}`}
               placeholder='Password'
             />

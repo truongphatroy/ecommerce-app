@@ -17,6 +17,8 @@ const ProductShow = () => {
   const selectedRef = useRef();
 
   // accsess all product state
+  const test = useSelector((state) => state);
+  console.log("test", test);
   const imageData = useSelector((state) => state?.ProductList?.ListImage);
   console.log(imageData);
 
@@ -29,10 +31,7 @@ const ProductShow = () => {
 
   // Loading Product list again when start going to page
   useEffect(() => {
-    console.log("33 shop1 dispatch");
-
     dispatch(getData());
-    console.log("33 shop2 dispatch");
   }, [dispatch]);
 
   // Filter for click on category button in sidebar

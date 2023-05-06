@@ -1,6 +1,7 @@
 /* Component show detail of selected product */
 
-import React from "react";
+import React, { useEffect } from "react";
+import { getData } from "../../store/actions/action";
 import Modal from "../../UI/modal/Modal";
 import Card from "react-bootstrap/Card";
 import CardGroup from "react-bootstrap/CardGroup";
@@ -11,11 +12,14 @@ import { useSelector, useDispatch } from "react-redux";
 
 import classes from "./DetailItem.module.scss";
 
-function DetailItem(props) {
-  const [detailItem] = useSelector((state) => state.Popup.popupData);
-  console.log(detailItem);
-
+function DetailItem() {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getData());
+  }, [dispatch]);
+
+  const [detailItem] = useSelector((state) => state.Popup.popupData);
 
   // Close popup func
   const handleOnClose = () => {

@@ -2,28 +2,42 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { AiFillCaretDown } from "react-icons/ai";
-import { activeInfor } from "../../storage/storage";
+import {
+  activeInfor,
+  getFromStorage,
+  keyOfActiveUser,
+  deleteDataInStorage,
+} from "../../storage/storage";
 import {
   showDetailActiveUser,
   hideDetailActiveUser,
+  signout,
+  updateCart,
 } from "../../store/actions/action";
 import ShowDetailActiveUser from "../../component/login/ShowDetailActiveUser";
 import classes from "./Navbar.module.scss";
 
 const Navbar = () => {
+  // const test = useSelector((state) => state);
+  // console.log("test banner", test);
+  const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const loginStatus = useSelector((state) => state.Login.stateLogin);
-  const activeUser = useSelector((state) => state.Login);
+  const activeUser = useSelector((state) => state.Login.activeUser);
   const activeUserShow = useSelector(
     (state) => state.ActiveUserInfo.isShowActiveUser
   );
-  const location = useLocation();
 
+  const test = useSelector((state) => state);
+  console.log(" navbar testcart", test);
   // for show badge number of product added to cart
   const addCartProductQuantity = useSelector((state) =>
-    state?.Cart?.items.reduce((acc, current) => acc + current?.amount, 0)
+    state?.Cart?.items?.reduce((acc, current) => acc + current?.amount, 0)
   );
+  console.log("abc", addCartProductQuantity);
+  console.log(typeof addCartProductQuantity);
 
   // navigate for Navbar
   const handleNavigate = (event) => {
@@ -49,9 +63,31 @@ const Navbar = () => {
 
   // logout
   const handleLogout = () => {
+    // delete active data in Local storage
+    deleteDataInStorage(keyOfActiveUser);
     // update state by redux
-    dispatch({ type: "ON_LOGOUT" });
+    console.log("signout");
+
+    dispatch(signout());
+    console.log("signout test state", test);
+    console.log(loginStatus);
+
+    // update cart
+    const undefindedLocalCart = getFromStorage("CartList__undefined");
+    console.log(undefindedLocalCart);
+    if (undefindedLocalCart) {
+      dispatch(updateCart(undefindedLocalCart));
+    } else {
+      // default initial value
+      const initailUpdatedCart = {
+        items: [],
+        totalAmount: 0,
+      };
+      dispatch(updateCart(initailUpdatedCart));
+    }
   };
+  console.log("signout test state", test);
+  console.log(loginStatus);
 
   return (
     <div className={classes.Navbar}>
@@ -83,7 +119,7 @@ const Navbar = () => {
         </li>
       </ul>
       <ul className={classes.list}>
-        <li className={classes.listItem}>
+        <li className={classes.CartNumber}>
           <button
             type='button'
             onClick={handleNavigate}
@@ -94,9 +130,11 @@ const Navbar = () => {
             </svg>
             <span className=''>Cart</span>
           </button>
-          <span className='badge ms-1 rounded-pill bg-danger'>
-            {addCartProductQuantity}{" "}
-            <span className='visually-hidden'>unread messages</span>
+          <span
+            className='badge ms-1 rounded-pill bg-danger d-flex align-items-center justify-content-center'
+            style={{ width: "40px", height: "23px" }}
+          >
+            {addCartProductQuantity || 0}{" "}
           </span>
         </li>
         <li className={classes.listItem}>
@@ -116,7 +154,7 @@ const Navbar = () => {
               >
                 <path d='M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z' />
               </svg>
-              <span>{activeInfor.fullName}</span>
+              <span>{activeUser?.fullName}</span>
               <span>{loginStatus && <AiFillCaretDown />}</span>
             </button>
           ) : (

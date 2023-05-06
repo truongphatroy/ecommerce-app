@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  padding-top: 1.5rem;
+  // padding-top: 1.5rem;
   // background-color: #f8f9fa;
   background-color: transparent;
   .list {
@@ -38,6 +38,10 @@
     button {
       border: none;
       background-color: transparent;
+    }
+    .CartNumber {
+      display: flex;
+      align-items: center;
     }
   }
 }

@@ -66,9 +66,14 @@ export const signin = (user) => {
     payload: user,
   };
 };
+export const signout = () => {
+  return {
+    type: "ON_LOGOUT",
+  };
+};
 export const restoreActiveStatus = (state) => {
   return {
-    type: "RESTORE",
+    type: "ON_RESTORE",
     payload: state,
   };
 };
@@ -80,9 +85,15 @@ export const addCart = (item) => {
     item: item,
   };
 };
-export const restoreUserCart = (item) => {
+export const updateCart = (item) => {
   return {
-    type: "RESTORE_CART",
+    type: "UPDATE_CART",
     item: item,
+  };
+};
+export const deletteCart = (cartItem) => {
+  return {
+    type: "DELETE_CART",
+    item: cartItem,
   };
 };

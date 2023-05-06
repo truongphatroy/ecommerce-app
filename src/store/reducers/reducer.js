@@ -5,6 +5,7 @@ import {
   keyOfActiveUser,
   deleteDataInStorage,
   activeInfor,
+  getFromStorage,
 } from "../../storage/storage";
 
 import { restoreActiveStatus } from "../actions/action";
@@ -13,7 +14,7 @@ import { restoreActiveStatus } from "../actions/action";
 const initialState_ListImage = { ListImage: null, loading: false, error: null };
 
 export const reducerProductList = (state = initialState_ListImage, action) => {
-  console.log(111);
+  console.log("reducerProductList");
 
   switch (action.type) {
     case "FETCH_IMAGE_REQUEST":
@@ -104,6 +105,8 @@ export const reducerShowDetail = (state = iniitialState_ShowDetail, action) => {
 // For update login status
 const initialState_Login = { stateLogin: false, activeUser: {} };
 export const reducerLogin = (state = initialState_Login, action) => {
+  console.log("reducerLogin");
+
   switch (action.type) {
     case "ON_LOGIN":
       // update active user (only email and fullName) into Local Storage
@@ -111,21 +114,18 @@ export const reducerLogin = (state = initialState_Login, action) => {
         email: action.payload.email,
         fullName: action.payload.fullName,
       };
-      saveToStorage(keyOfActiveUser, activeUser);
       return {
         ...state,
         stateLogin: true,
         activeUser: activeUser,
       };
     case "ON_LOGOUT":
-      // delete active data in Local storage
-      deleteDataInStorage(keyOfActiveUser);
       return {
         ...state,
         stateLogin: false,
         activeUser: {},
       };
-    case "RESTORE":
+    case "ON_RESTORE":
       return {
         ...state,
         stateLogin: true,
@@ -137,90 +137,117 @@ export const reducerLogin = (state = initialState_Login, action) => {
 };
 
 // For cart
-const iniitialState_Cart = { items: [], totalAmount: 0 };
+const iniitialState_Cart = {
+  items: [],
+  totalAmount: 0,
+};
 export const reducerCart = (state = iniitialState_Cart, action) => {
-  switch (action.type) {
-    case "ADD_CART": {
-      console.log(action.type);
-      console.log(action);
-      console.log(action?.item);
-      console.log(typeof action?.item);
-      console.log(action?.item?.price);
-      console.log(typeof action?.item?.price);
-      console.log(state?.totalAmount);
-      console.log(typeof state?.totalAmount);
-      console.log(state);
+  console.log("reducerCart state", state);
+  console.log("reducerCart action", action);
 
-      const updatedTotalAmount =
-        state?.totalAmount + action?.item?.price * action?.item?.amount;
+  if (state) {
+    switch (action.type) {
+      case "ADD_CART": {
+        console.log(action?.type);
+        console.log("action testcart", action);
+        console.log(action?.item);
+        console.log(typeof action?.item);
+        console.log(action?.item?.price);
+        console.log(typeof action?.item?.price);
+        console.log(state?.totalAmount);
+        console.log(typeof state?.totalAmount);
+        console.log("testcart", state);
 
-      const existingCartItemIndex = state.items.findIndex(
-        (item) => item?.id === action?.item?.id
-      );
+        const updatedTotalAmount =
+          state?.totalAmount + action?.item?.price * action?.item?.amount;
+        console.log(updatedTotalAmount);
 
-      const existingCartItem = state?.items[existingCartItemIndex];
-      let updatedItems;
-      if (existingCartItem) {
-        const updatedItem = {
-          ...existingCartItem,
-          amount: existingCartItem?.amount + action?.item?.amount,
-          productTotalAmount:
-            action?.item?.price *
-            (existingCartItem?.amount + action?.item?.amount),
+        const existingCartItemIndex = state?.items?.findIndex(
+          (item) => item?.id === action?.item?.id
+        );
+        console.log(existingCartItemIndex);
+
+        const existingCartItem = state?.items?.[existingCartItemIndex];
+        let updatedItems;
+        console.log(existingCartItem);
+        if (existingCartItem) {
+          const updatedItem = {
+            ...existingCartItem,
+            amount: existingCartItem?.amount + action?.item?.amount,
+            productTotalAmount:
+              action?.item?.price *
+              (existingCartItem?.amount + action?.item?.amount),
+          };
+          console.log(updatedItems);
+
+          updatedItems = [...state?.items];
+          console.log(updatedItems);
+
+          updatedItems[existingCartItemIndex] = updatedItem;
+        } else {
+          // console.log(state.items);
+          // console.log(state?.items);
+          // updatedItems = state?.items?.concat(action?.item);
+
+          // testing
+          // updatedItems = [...state.items, action?.item];
+          updatedItems = [...state?.items, action?.item];
+          // updatedItems = [...state.items, action?.item];
+          console.log(state?.items);
+          console.log(action?.item);
+          console.log(updatedItems);
+        }
+        // save to local storage
+        console.log("save");
+        console.log("updatedItems");
+        console.log("updatedTotalAmount", updatedTotalAmount);
+
+        saveToStorage(keyOfCartList + `__${action?.item?.orderUser}`, {
+          items: updatedItems,
+          totalAmount: updatedTotalAmount,
+        });
+        return {
+          items: updatedItems,
+          totalAmount: updatedTotalAmount,
         };
-        updatedItems = [...state?.items];
-        updatedItems[existingCartItemIndex] = updatedItem;
-      } else {
-        updatedItems = state?.items?.concat(action?.item);
+      }
+      case "UPDATE_CART": {
+        // update cart from Local storage, so no need to save Local Storage again
+        return {
+          items: action?.item?.items,
+          totalAmount: action?.item?.totalAmount,
+        };
+      }
+
+      case "DELETE_CART": {
+        const updatedTotalAmount =
+          state?.totalAmount - action?.item?.price * action?.item?.amount;
+        console.log(updatedTotalAmount);
+
+        const existingCartItemIndex = state?.items?.findIndex(
+          (item) => item?.id === action?.item?.id
+        );
+        console.log(existingCartItemIndex);
+
+        let newItems = [...state?.items];
+        console.log(newItems);
+
+        const updatedItems = newItems.splice(existingCartItemIndex, 1);
         console.log(updatedItems);
-      }
-
-      // save to local storage
-      saveToStorage(keyOfCartList + `__${action?.item?.oderUser}`, {
-        items: updatedItems,
-        totalAmount: updatedTotalAmount,
-      });
-      return {
-        items: updatedItems,
-        totalAmount: updatedTotalAmount,
-      };
-    }
-    case "RESTORE_CART": {
-      console.log(state);
-      console.log(action);
-      console.log(action?.item);
-      console.log(action?.item.items);
-      console.log(action?.totalAmount);
-      return {
-        items: action?.item.items,
-        totalAmount: action?.item?.totalAmount,
-      };
-    }
-
-    case "DELETE_CART": {
-      const existingCartItemIndex = state.items.findIndex(
-        (item) => item.id === action.id
-      );
-      const existingItem = state.items[existingCartItemIndex];
-      const updatedTotalAmount = state.totalAmount - existingItem.price;
-      let updatedItems;
-      if (existingItem.amount === 1) {
-        updatedItems = state.items.filter((item) => item.id !== action.id);
-      } else {
-        const updatedItem = {
-          ...existingItem,
-          amount: existingItem.amount - 1,
+        // update Local storage
+        saveToStorage(keyOfCartList + `__${action?.item?.orderUser}`, {
+          items: updatedItems,
+          totalAmount: updatedTotalAmount,
+        });
+        return {
+          items: updatedItems,
+          totalAmount: updatedTotalAmount,
         };
-        updatedItems = [...state.items];
-        updatedItems[existingCartItemIndex] = updatedItem;
       }
-
-      return {
-        items: updatedItems,
-        totalAmount: updatedTotalAmount,
-      };
+      default:
+        return state;
     }
-    default:
-      return state;
+  } else {
+    console.log("reducerCart state is underfined", state);
   }
 };

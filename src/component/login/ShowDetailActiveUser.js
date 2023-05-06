@@ -1,4 +1,4 @@
-/* Component show detail of selected product */
+/* Component show detail of active user */
 
 import React from "react";
 import Modal from "../../UI/modal/Modal";
@@ -14,10 +14,8 @@ import classes from "./ShowDetailActiveUser.module.scss";
 
 function ShowDetailActiveUser(props) {
   const activeUserInformation = useSelector(
-    (state) => state?.ActiveUserInfo?.activeUserProfile?.activeUser
+    (state) => state?.ActiveUserInfo?.activeUserProfile
   );
-  console.log(activeUserInformation);
-
   const dispatch = useDispatch();
 
   // Close popup func
@@ -42,7 +40,9 @@ function ShowDetailActiveUser(props) {
           <Card className=''>
             <Card.Body>
               <Card.Title className=''>Profile</Card.Title>
-              <Card.Text>User name: {activeUserInformation?.email}</Card.Text>
+              <Card.Text>
+                User fullname: {activeUserInformation?.fullName}
+              </Card.Text>
               <Card.Text>User email: {activeUserInformation?.email}</Card.Text>
             </Card.Body>
           </Card>

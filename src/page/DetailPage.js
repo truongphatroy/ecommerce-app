@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
-import { addCart } from "../store/actions/action";
+import { addCart, getData } from "../store/actions/action";
 
 import ProductShowCard from "../component/shop/ProductShowCard";
 
@@ -10,6 +11,12 @@ import classes from "./DetailPage.module.scss";
 /* Component function */
 const DetailPage = () => {
   const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getData());
+  }, [dispatch]);
+  const { productId } = useParams();
+  console.log("aa", productId);
+
   const test = useSelector((state) => state);
   console.log(test);
 
@@ -29,12 +36,11 @@ const DetailPage = () => {
     (state) => state?.ShowDetail?.category
   );
 
-  const selectedProductId = useSelector((state) => state?.ShowDetail?.itemId);
-  console.log(selectedProductId);
+  // const selectedProductId = useSelector((state) => state?.ShowDetail?.itemId);
   const [selectedProductAmount, setSelectedProductAmount] = useState(1);
 
   const selectedProduct = productList?.find(
-    (product) => product?._id?.$oid === selectedProductId
+    (product) => product?._id?.$oid === productId
   );
   console.log(selectedProduct);
 
@@ -43,7 +49,7 @@ const DetailPage = () => {
   const productRelateList = productList?.filter(
     (product) =>
       product?.category === selectedProductCategory &&
-      product?._id.$oid !== selectedProductId
+      product?._id.$oid !== productId
   );
 
   // convert price to vi string style
@@ -62,11 +68,14 @@ const DetailPage = () => {
       product: selectedProduct?.name,
       price: parseInt(selectedProduct?.price),
       amount: parseInt(selectedProductAmount),
-      id: selectedProduct?._id.$oid,
+      id: selectedProduct?._id?.$oid,
       productTotalAmount:
         parseInt(selectedProductAmount) * parseInt(selectedProduct?.price),
-      oderUser: activeUser,
+      orderUser: activeUser,
     };
+    console.log(item);
+    console.log("testcart", addCart(item));
+
     dispatch(addCart(item));
   };
 
@@ -81,7 +90,7 @@ const DetailPage = () => {
 
   if (selectedProduct) {
     return (
-      <div className='container mt-5'>
+      <div className='container mt-4'>
         <div className='row '>
           <div className='col-md-1 col-lg-1 p-0 d-flex'>
             <div className=' align-self-center'>

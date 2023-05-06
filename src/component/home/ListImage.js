@@ -8,11 +8,9 @@ import classes from "./ListImage.module.scss";
 
 const ListImage = () => {
   const dispatch = useDispatch();
-  console.log("33 home outside");
+  // console.log("33 home outside");
 
   useEffect(() => {
-    console.log("33 home dispatch");
-
     dispatch(getData());
   }, []);
 

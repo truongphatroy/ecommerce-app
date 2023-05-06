@@ -1,14 +1,19 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
 import { FcLeft, FcRight } from "react-icons/fc";
 import { FiGift } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
+
+import { addCart, deletteCart } from "../../store/actions/action";
+
 import classes from "./ShoppingCart.module.scss";
+import { saveToStorage, keyOfCartList } from "../../storage/storage";
 
 const ShoppingCart = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleGoShop = () => {
     navigate("/shop");
@@ -18,6 +23,9 @@ const ShoppingCart = () => {
   };
   const statecheck = useSelector((state) => state);
   console.log("thong tin chekc state", statecheck);
+  const activeUserInfor = useSelector((state) => state.Login);
+  console.log("thong tin chekc user state", activeUserInfor);
+
   const cartList = useSelector((state) => state?.Cart);
   console.log("thong tin cart", cartList);
   const cartItems = cartList?.items;
@@ -25,6 +33,37 @@ const ShoppingCart = () => {
 
   const cartTotalAmount = useSelector((state) => state?.Cart?.totalAmount);
   console.log(cartTotalAmount);
+  const handleDecrease = (cartItem) => {
+    if (cartItem?.amount > 1) {
+      console.log(cartItem);
+      let updatedItem = {
+        ...cartItem,
+        amount: -1,
+        productTotalAmount: 0,
+      };
+      console.log(updatedItem);
+
+      dispatch(addCart(updatedItem));
+    }
+  };
+
+  const handleIncrease = (cartItem) => {
+    if (cartItem?.amount < 20) {
+      let updatedItem = {
+        ...cartItem,
+        amount: 1,
+        productTotalAmount: 0,
+      };
+      dispatch(addCart(updatedItem));
+    }
+  };
+
+  const handleDeleteProduct = (cartItem, indexItem) => {
+    console.log("index", cartItems, cartItem, indexItem);
+    let newCartItem = cartItems?.splice(indexItem, 1);
+    console.log(newCartItem);
+    dispatch(deletteCart(cartItem));
+  };
 
   return (
     <div>
@@ -58,7 +97,7 @@ const ShoppingCart = () => {
                 </tr>
               </thead>
               <tbody>
-                {cartItems?.map((cartItem) => (
+                {cartItems?.map((cartItem, indexItem) => (
                   <tr
                     key={cartItem?.product}
                     className='text-center align-middle'
@@ -80,19 +119,34 @@ const ShoppingCart = () => {
                     <td className='text-center align-middle'>
                       {cartItem?.product}
                     </td>
-                    <td className='text-center align-middle text-secondary fw-light'>
+                    <td
+                      className='text-center align-middle text-secondary fw-light'
+                      style={{ width: "120px" }}
+                    >
                       {parseInt(cartItem?.price).toLocaleString("vi-VN")} VND
                     </td>
                     <td className='text-center align-middle'>
                       <div className='d-flex align-items-center me-2'>
-                        <AiFillCaretLeft />
-                        <span className='d-flex align-items-center ms-2 me-2'>
+                        <AiFillCaretLeft
+                          className={classes.btnStyle}
+                          onClick={() => handleDecrease(cartItem)}
+                        />
+                        <span
+                          className='ms-2 me-2 mx-auto'
+                          style={{ width: "30px" }}
+                        >
                           {cartItem?.amount}
                         </span>
-                        <AiFillCaretRight />
+                        <AiFillCaretRight
+                          className={classes.btnStyle}
+                          onClick={() => handleIncrease(cartItem)}
+                        />
                       </div>
                     </td>
-                    <td className='text-center align-middle text-secondary fw-light'>
+                    <td
+                      className='text-center align-middle text-secondary fw-light '
+                      style={{ width: "120px" }}
+                    >
                       {parseInt(cartItem?.productTotalAmount).toLocaleString(
                         "vi-VN"
                       )}{" "}
@@ -100,7 +154,12 @@ const ShoppingCart = () => {
                     </td>
                     <td className='text-center align-middle'>
                       <div className='text-center align-middle'>
-                        <RiDeleteBin6Line />
+                        <RiDeleteBin6Line
+                          className={classes.btnStyle}
+                          onClick={() =>
+                            handleDeleteProduct(cartItem, indexItem)
+                          }
+                        />
                       </div>
                     </td>
                   </tr>

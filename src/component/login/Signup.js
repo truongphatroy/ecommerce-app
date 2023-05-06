@@ -111,19 +111,19 @@ const Signup = () => {
             />
             <input
               ref={emailRef}
-              type='text'
+              type='email'
               className={`mb-0 fw-light fs-5 pt-3 pb-3  ${classes.inputForm2}`}
               placeholder='Email'
             />
             <input
               ref={passwordRef}
-              type='text'
+              type='password'
               className={`mb-0 fw-light fs-5 pt-3 pb-3  ${classes.inputForm2}`}
               placeholder='Password'
             />
             <input
               ref={phoneRef}
-              type='text'
+              type='number'
               className={`mb-0 fw-light fs-5 pt-3 pb-3  ${classes.inputForm2}`}
               placeholder='Phone'
             />
