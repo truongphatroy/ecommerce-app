@@ -1,6 +1,9 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+
+import { addCart, deletteCart } from "../../store/actions/action";
+
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
@@ -9,70 +12,55 @@ import { FcLeft, FcRight } from "react-icons/fc";
 import { FiGift } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
-import { addCart, deletteCart } from "../../store/actions/action";
-
 import classes from "./ShoppingCart.module.scss";
-import { saveToStorage, keyOfCartList } from "../../storage/storage";
 
 const ShoppingCart = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [show, setShow] = useState(false);
+
+  const cartTotalAmount = useSelector((state) => state?.Cart?.totalAmount);
+  const activeUserInfor = useSelector((state) => state.Login);
+  const cartList = useSelector((state) => state?.Cart);
+  const cartItems = cartList?.items;
+
+  // submit button
   const handleSignIn = () => {
     navigate("/signin");
     setShow(false);
   };
+
+  // go checkout
   const handleCheckout = () => {
     navigate("/checkout");
     setShow(false);
   };
+
+  // for alert info modal
   const handleClose = () => {
     setShow(false);
   };
   const handleShow = () => {
-    console.log("aaaa", activeUserInfor.stateLogin);
+    // if logined
     if (activeUserInfor.stateLogin) {
       navigate("/checkout");
     } else {
-      // alert("do you want register a user before checkout");
+      // show modal for selection
       setShow(true);
     }
   };
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const handleGoShop = () => {
     navigate("/shop");
   };
-  const handleGoCheckout = () => {
-    console.log(activeUserInfor);
-    console.log("thong tin chekc state", statecheck);
 
-    if (activeUserInfor.statusLogin) {
-      navigate("/checkout");
-    } else {
-      alert("do you want register a user before checkout");
-    }
-  };
-  const statecheck = useSelector((state) => state);
-  console.log("thong tin chekc state", statecheck);
-  const activeUserInfor = useSelector((state) => state.Login);
-  console.log("thong tin chekc user state", activeUserInfor);
-
-  const cartList = useSelector((state) => state?.Cart);
-  console.log("thong tin cart", cartList);
-  const cartItems = cartList?.items;
-  console.log(cartItems);
-
-  const cartTotalAmount = useSelector((state) => state?.Cart?.totalAmount);
-  console.log(cartTotalAmount);
   const handleDecrease = (cartItem) => {
     if (cartItem?.amount > 1) {
-      console.log(cartItem);
       let updatedItem = {
         ...cartItem,
         amount: -1,
         productTotalAmount: 0,
       };
-      console.log(updatedItem);
 
       dispatch(addCart(updatedItem));
     }
@@ -90,9 +78,7 @@ const ShoppingCart = () => {
   };
 
   const handleDeleteProduct = (cartItem, indexItem) => {
-    console.log("index", cartItems, cartItem, indexItem);
-    let newCartItem = cartItems?.splice(indexItem, 1);
-    console.log(newCartItem);
+    // disptach to update cart
     dispatch(deletteCart(cartItem));
   };
 
@@ -103,7 +89,6 @@ const ShoppingCart = () => {
         {/* detail table */}
         <div className='row'>
           <div className='col-lg-8 '>
-            {/* <table className='table table-borderless'> */}
             <table className='table table-border'>
               <thead className=''>
                 <tr className='bg-light'>

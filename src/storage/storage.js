@@ -26,7 +26,8 @@ export const deleteDataInStorage = (data) => {
 // get user array
 export const userArr = getFromStorage(keyOfUserArr) || [];
 
-/* tetst */
+/*
+// tetst
 var totalBytes = 0;
 for (var key in localStorage) {
   if (localStorage.hasOwnProperty(key)) {
@@ -39,4 +40,4 @@ var maxSpace = 5 * 1024; // Dung lượng tối đa trong LocalStorage là 5MB
 
 console.log("Dung lượng đã sử dụng: " + totalUsedSpace + " KB");
 console.log("Dung lượng tối đa: " + maxSpace + " KB");
-console.log("Dung lượng còn lại: " + (maxSpace - totalUsedSpace) + " KB");
+console.log("Dung lượng còn lại: " + (maxSpace - totalUsedSpace) + " KB"); */

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getData, showPopup } from "../../store/actions/action";
+import { getData } from "../../store/actions/action";
 import DetailItem from "./DetailItem";
 import ProductCard from "./ProductCard";
 
@@ -8,7 +8,6 @@ import classes from "./ListImage.module.scss";
 
 const ListImage = () => {
   const dispatch = useDispatch();
-  // console.log("33 home outside");
 
   useEffect(() => {
     dispatch(getData());

@@ -1,16 +1,7 @@
 /* CREATE INITIAL VALUE AND REDUCER */
-import {
-  saveToStorage,
-  keyOfCartList,
-  keyOfActiveUser,
-  deleteDataInStorage,
-  activeInfor,
-  getFromStorage,
-} from "../../storage/storage";
+import { saveToStorage, keyOfCartList } from "../../storage/storage";
 
-import { restoreActiveStatus } from "../actions/action";
-
-// For image list (call API)
+// For products list (call API)
 const initialState_ListImage = { ListImage: null, loading: false, error: null };
 
 export const reducerProductList = (state = initialState_ListImage, action) => {
@@ -148,16 +139,6 @@ export const reducerCart = (state = iniitialState_Cart, action) => {
   if (state) {
     switch (action.type) {
       case "ADD_CART": {
-        console.log(action?.type);
-        console.log("action testcart", action);
-        console.log(action?.item);
-        console.log(typeof action?.item);
-        console.log(action?.item?.price);
-        console.log(typeof action?.item?.price);
-        console.log(state?.totalAmount);
-        console.log(typeof state?.totalAmount);
-        console.log("testcart", state);
-
         const updatedTotalAmount =
           state?.totalAmount + action?.item?.price * action?.item?.amount;
         console.log(updatedTotalAmount);
@@ -169,7 +150,7 @@ export const reducerCart = (state = iniitialState_Cart, action) => {
 
         const existingCartItem = state?.items?.[existingCartItemIndex];
         let updatedItems;
-        console.log(existingCartItem);
+        // if product existing
         if (existingCartItem) {
           const updatedItem = {
             ...existingCartItem,
@@ -184,24 +165,11 @@ export const reducerCart = (state = iniitialState_Cart, action) => {
           console.log(updatedItems);
 
           updatedItems[existingCartItemIndex] = updatedItem;
+          // if product not existing
         } else {
-          // console.log(state.items);
-          // console.log(state?.items);
-          // updatedItems = state?.items?.concat(action?.item);
-
-          // testing
-          // updatedItems = [...state.items, action?.item];
           updatedItems = [...state?.items, action?.item];
-          // updatedItems = [...state.items, action?.item];
-          console.log(state?.items);
-          console.log(action?.item);
-          console.log(updatedItems);
         }
         // save to local storage
-        console.log("save");
-        console.log("updatedItems");
-        console.log("updatedTotalAmount", updatedTotalAmount);
-
         saveToStorage(keyOfCartList + `__${action?.item?.orderUser}`, {
           items: updatedItems,
           totalAmount: updatedTotalAmount,
@@ -222,25 +190,22 @@ export const reducerCart = (state = iniitialState_Cart, action) => {
       case "DELETE_CART": {
         const updatedTotalAmount =
           state?.totalAmount - action?.item?.price * action?.item?.amount;
-        console.log(updatedTotalAmount);
 
         const existingCartItemIndex = state?.items?.findIndex(
           (item) => item?.id === action?.item?.id
         );
-        console.log(existingCartItemIndex);
 
-        let newItems = [...state?.items];
-        console.log(newItems);
+        const tempItems = [...state?.items];
 
-        const updatedItems = newItems.splice(existingCartItemIndex, 1);
-        console.log(updatedItems);
+        // delete item
+        const deletedItems = tempItems.splice(existingCartItemIndex, 1);
         // update Local storage
         saveToStorage(keyOfCartList + `__${action?.item?.orderUser}`, {
-          items: updatedItems,
+          items: tempItems,
           totalAmount: updatedTotalAmount,
         });
         return {
-          items: updatedItems,
+          items: tempItems,
           totalAmount: updatedTotalAmount,
         };
       }
@@ -248,7 +213,6 @@ export const reducerCart = (state = iniitialState_Cart, action) => {
         return state;
     }
   } else {
-    console.log("reducerCart state is underfined", state);
   }
 };
 

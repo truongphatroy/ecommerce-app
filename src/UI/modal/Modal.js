@@ -5,7 +5,7 @@ import { hidePopup, hideDetailActiveUser } from "../../store/actions/action";
 
 import classes from "./Modal.module.scss";
 
-const Backdrop = (props) => {
+const Backdrop = () => {
   const dispatch = useDispatch();
   const hadleOnclose = () => {
     dispatch(hidePopup());

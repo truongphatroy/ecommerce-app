@@ -1,5 +1,3 @@
-import { useDispatch } from "react-redux";
-import { useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import HomePage from "./page/HomePage";
@@ -10,8 +8,6 @@ import CheckoutPage from "./page/CheckoutPage";
 import SignInPage from "./page/SignInPage";
 import SignUpPage from "./page/SignUpPage";
 import RootLayout from "./page/RootLayout";
-import { restoreActiveStatus, updateCart } from "./store/actions/action";
-import { activeInfor, getFromStorage } from "./storage/storage";
 
 // create a custom route
 const router = createBrowserRouter([

@@ -2,29 +2,30 @@ import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { AiFillCaretDown } from "react-icons/ai";
-import AlertComponent from "../../component/cart/Alert";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 import {
-  activeInfor,
   getFromStorage,
   keyOfActiveUser,
   deleteDataInStorage,
 } from "../../storage/storage";
+
 import {
   showDetailActiveUser,
-  hideDetailActiveUser,
   signout,
   updateCart,
 } from "../../store/actions/action";
+
 import ShowDetailActiveUser from "../../component/login/ShowDetailActiveUser";
+
 import classes from "./Navbar.module.scss";
 
 const Navbar = () => {
-  const [showModal, setShowModal] = useState(false);
-  const location = useLocation();
+  const location = useLocation(); // for controlling active style
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const test = useSelector((state) => state);
 
   const loginStatus = useSelector((state) => state.Login.stateLogin);
   const activeUser = useSelector((state) => state.Login.activeUser);
@@ -32,14 +33,10 @@ const Navbar = () => {
     (state) => state.ActiveUserInfo.isShowActiveUser
   );
 
-  const test = useSelector((state) => state);
-  console.log(" navbar testcart", test);
   // for show badge number of product added to cart
   const addCartProductQuantity = useSelector((state) =>
     state?.Cart?.items?.reduce((acc, current) => acc + current?.amount, 0)
   );
-  console.log("abc", addCartProductQuantity);
-  console.log(typeof addCartProductQuantity);
 
   // navigate for Navbar
   const handleNavigate = (event) => {
@@ -58,6 +55,9 @@ const Navbar = () => {
     }
   };
 
+  /* FUNCTOIN */
+
+  //show detail of user modal
   const handleCheckUser = () => {
     console.log(1);
     dispatch(showDetailActiveUser(activeUser));
@@ -68,15 +68,10 @@ const Navbar = () => {
     // delete active data in Local storage
     deleteDataInStorage(keyOfActiveUser);
     // update state by redux
-    console.log("signout");
-
     dispatch(signout());
-    console.log("signout test state", test);
-    console.log(loginStatus);
 
     // update cart
     const undefindedLocalCart = getFromStorage("CartList__undefined");
-    console.log(undefindedLocalCart);
     if (undefindedLocalCart) {
       dispatch(updateCart(undefindedLocalCart));
     } else {
@@ -91,7 +86,6 @@ const Navbar = () => {
     {
       /* Show and setting logout infor */
     }
-    setShowModal(true);
     toast.info('"successful Logout!', {
       position: "top-center",
       autoClose: 3000,
@@ -103,8 +97,6 @@ const Navbar = () => {
       theme: "light",
     });
   };
-  console.log("signout test state", test);
-  console.log(loginStatus);
 
   return (
     <div className={classes.Navbar}>
@@ -211,6 +203,7 @@ const Navbar = () => {
       </ul>
       {/* Show detail of active user */}
       {activeUserShow && <ShowDetailActiveUser />}
+
       {/* Show logout infor */}
       <div className={classes.showModal}>
         <ToastContainer

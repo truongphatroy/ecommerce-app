@@ -18,7 +18,7 @@ const rootReducer = combineReducers({
   ShowDetail: reducerShowDetail, // For Show detail of product
   Login: reducerLogin, // For login status
   Cart: reducerCart, // for Cart
-  LiveChat: reducerLiveChat,
+  LiveChat: reducerLiveChat, // for live chat
 });
 
 export default rootReducer;

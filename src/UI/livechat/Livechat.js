@@ -12,6 +12,7 @@ const Livechat = () => {
   const liveChatState = useSelector((state) => state.LiveChat);
 
   const handleChat = () => {
+    // update state
     dispatch(liveChat());
   };
   return (

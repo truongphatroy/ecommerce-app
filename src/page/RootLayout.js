@@ -6,40 +6,26 @@ import Footer from "../UI/footer/Footer";
 import Livechat from "../UI/livechat/Livechat";
 import { Wrapper } from "../UI/Wrapper";
 import { useDispatch } from "react-redux";
-import {
-  restoreActiveStatus,
-  updateCart,
-  getData,
-  signin,
-  addCart,
-} from "../store/actions/action";
+import { updateCart, signin } from "../store/actions/action";
 import { getFromStorage, keyOfActiveUser } from "../storage/storage";
 import { checkRestoreUser } from "../storage/checkUser";
 
 const RootLayout = () => {
-  console.log("33 rootlayout");
   const dispatch = useDispatch();
 
   // update active user every time refresh
   const activeInfor = getFromStorage(keyOfActiveUser) || false;
   useEffect(() => {
-    console.log("activeInfor", activeInfor);
-
     // check active info of last time in Local storage
     if (activeInfor) {
-      console.log("activeInfor", activeInfor);
-
       // check user existing and delete password before save to Local storage
       if (checkRestoreUser(activeInfor)) {
-        console.log("33 rootlayout checkRestoreUser");
-
         const user = checkRestoreUser(activeInfor);
         // restore active user
         dispatch(signin(user));
         // Restore cart in local storage
         if (getFromStorage(`CartList__${user?.email}`)) {
           const updatedCart = getFromStorage(`CartList__${user?.email}`);
-          console.log("33 rootlayout restore cart");
 
           dispatch(updateCart(updatedCart));
         }

@@ -1,30 +1,16 @@
-/* Component show detail of active user */
-
 import React from "react";
-import ModalChat from "./ModalChat";
-import Button from "react-bootstrap/Button";
-import { hideDetailActiveUser } from "../../store/actions/action";
 
-import { useSelector, useDispatch } from "react-redux";
 import { FcBusinessman } from "react-icons/fc";
 import { GrAttachment } from "react-icons/gr";
 import { BsEmojiSmile, BsSendFill } from "react-icons/bs";
+
+import ModalChat from "./ModalChat";
+
 import classes from "./ChatContent.module.scss";
 
 function ChatContent(props) {
-  const activeUserInformation = useSelector(
-    (state) => state?.ActiveUserInfo?.activeUserProfile
-  );
-  const dispatch = useDispatch();
-
-  // Close popup func
-  const handleOnClose = () => {
-    dispatch(hideDetailActiveUser());
-  };
-
   return (
     // use Modal cover all infor of product
-    // <Modal className={classes.chatModal}>
     <ModalChat>
       <div className={classes.chatGroup}>
         <div className={classes.header}>

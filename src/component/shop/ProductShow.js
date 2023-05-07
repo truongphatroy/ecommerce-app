@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import { getData } from "../../store/actions/action";
 import Sidebar from "./Sidebar";
 import Pagination from "./Pagination";
 import ProductShowCard from "./ProductShowCard";
 import PaginationTitle from "./PaginationTitle";
+
 import classes from "./ProductShow.module.scss";
 
 const ProductShow = () => {
@@ -53,17 +55,10 @@ const ProductShow = () => {
   // Filter for selection
   const handleSelectedCategory = (event) => {
     inputRef.current.value = "";
-    console.log(event);
-    console.log(event.target.value);
 
     setCategoryProduct(event.target.value);
     setCurrentpage(1);
   };
-
-  // click on product to show detail
-  // const handleClickShowDetail = (event, itemId) => {
-  //   console.log("show detail");
-  // };
 
   if (imageData && imageData?.length > 0) {
     // when openning page or show all product
