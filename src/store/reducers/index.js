@@ -8,6 +8,7 @@ import {
   reducerShowDetail,
   reducerLogin,
   reducerCart,
+  reducerLiveChat,
 } from "./reducer";
 
 const rootReducer = combineReducers({
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   ShowDetail: reducerShowDetail, // For Show detail of product
   Login: reducerLogin, // For login status
   Cart: reducerCart, // for Cart
+  LiveChat: reducerLiveChat,
 });
 
 export default rootReducer;

@@ -1,22 +1,24 @@
 .backdrop {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  z-index: 11;
+  top: 17vh;
+  right: 2%;
+  width: 400px;
+  height: 65vh;
+  border-radius: 14px;
+
+  z-index: 9;
   background-color: rgba(0, 0, 0, 0.75);
 }
 
 .modal {
   position: fixed;
-  top: 10vh;
-  left: 15%;
-  width: 70%;
+  top: 17vh;
+  right: 2%;
+  width: 400px;
+  height: 65vh;
   background-color: white;
-  padding: 1rem;
   border-radius: 14px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-  z-index: 12;
+  z-index: 10;
   animation: slide-down 300ms ease-out forwards;
 }

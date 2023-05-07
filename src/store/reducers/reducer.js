@@ -251,3 +251,19 @@ export const reducerCart = (state = iniitialState_Cart, action) => {
     console.log("reducerCart state is underfined", state);
   }
 };
+
+// Livechat
+const iniitialState_Chat = false;
+export const reducerLiveChat = (state = iniitialState_Chat, action) => {
+  console.log("LIVE_CHAT...", action.type);
+
+  switch (action.type) {
+    case "LIVE_CHAT": {
+      console.log("LIVE_CHAT return true");
+      const temp = state;
+      return !temp;
+    }
+    default:
+      return state;
+  }
+};

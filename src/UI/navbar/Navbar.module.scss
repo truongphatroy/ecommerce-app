@@ -12,15 +12,20 @@
     bottom: -110px;
     right: 0;
     opacity: 1;
-    animation: fadeOut 3s ease-in-out;
-    transition: opacity 2s;
+    // animation: fadeOut 4s ease-in-out;
   }
 
-  @keyframes fadeOut {
-    0% {
-      opacity: 0;
-    }
-  }
+  // @keyframes fadeOut {
+  //   0% {
+  //     opacity: 0;
+  //   }
+  //   50% {
+  //     opacity: 1;
+  //   }
+  //   100% {
+  //     opacity: 0;
+  //   }
+  // }
   .list {
     display: flex;
     align-items: center;

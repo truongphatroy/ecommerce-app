@@ -1,10 +1,12 @@
 import React from "react";
-import ProductList from "../component/shop/ProductList";
+import ShopBanner from "../component/shop/ShopBanner";
+import ProductShow from "../component/shop/ProductShow";
 
 const ShopPage = () => {
   return (
     <div>
-      <ProductList />
+      <ShopBanner />
+      <ProductShow />
     </div>
   );
 };

@@ -14,8 +14,11 @@
   .detailItemCard {
     border: none;
     color: rgb(0, 0, 0, 0.7);
+    .desc {
+    }
     .detailItemImage {
       border: none;
+      width: 80%;
     }
     .detailItemTitle {
       color: rgb(0, 0, 0, 0.9);

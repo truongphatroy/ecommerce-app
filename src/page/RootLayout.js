@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 
 import Navbar from "../UI/navbar/Navbar";
 import Footer from "../UI/footer/Footer";
+import Livechat from "../UI/livechat/Livechat";
 import { Wrapper } from "../UI/Wrapper";
 import { useDispatch } from "react-redux";
 import {
@@ -57,15 +58,15 @@ const RootLayout = () => {
   }, []);
 
   return (
-    <>
-      <div>
-        <Wrapper>
-          <Navbar />
-          <Outlet />
-        </Wrapper>
-        <Footer />
-      </div>
-    </>
+    <div>
+      <Wrapper>
+        <Navbar />
+        <Outlet />
+      </Wrapper>
+      <Livechat />
+
+      <Footer />
+    </div>
   );
 };
 

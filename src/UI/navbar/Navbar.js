@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { AiFillCaretDown } from "react-icons/ai";
 import AlertComponent from "../../component/cart/Alert";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   activeInfor,
   getFromStorage,
@@ -19,8 +21,6 @@ import ShowDetailActiveUser from "../../component/login/ShowDetailActiveUser";
 import classes from "./Navbar.module.scss";
 
 const Navbar = () => {
-  // const test = useSelector((state) => state);
-  // console.log("test banner", test);
   const [showModal, setShowModal] = useState(false);
   const location = useLocation();
   const dispatch = useDispatch();
@@ -88,10 +88,20 @@ const Navbar = () => {
       dispatch(updateCart(initailUpdatedCart));
     }
 
+    {
+      /* Show and setting logout infor */
+    }
     setShowModal(true);
-    setTimeout(() => {
-      setShowModal(false);
-    }, 3000);
+    toast.info('"successful Logout!', {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   };
   console.log("signout test state", test);
   console.log(loginStatus);
@@ -201,8 +211,20 @@ const Navbar = () => {
       </ul>
       {/* Show detail of active user */}
       {activeUserShow && <ShowDetailActiveUser />}
+      {/* Show logout infor */}
       <div className={classes.showModal}>
-        {showModal && <AlertComponent content='successful Logout!' />}
+        <ToastContainer
+          position='top-center'
+          autoClose={3000}
+          hideProgressBar={true}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme='light'
+        />
       </div>
     </div>
   );
