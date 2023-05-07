@@ -1,6 +1,8 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
 import { FcLeft, FcRight } from "react-icons/fc";
@@ -13,13 +15,42 @@ import classes from "./ShoppingCart.module.scss";
 import { saveToStorage, keyOfCartList } from "../../storage/storage";
 
 const ShoppingCart = () => {
+  const [show, setShow] = useState(false);
+  const handleSignIn = () => {
+    navigate("/signin");
+    setShow(false);
+  };
+  const handleCheckout = () => {
+    navigate("/checkout");
+    setShow(false);
+  };
+  const handleClose = () => {
+    setShow(false);
+  };
+  const handleShow = () => {
+    console.log("aaaa", activeUserInfor.stateLogin);
+    if (activeUserInfor.stateLogin) {
+      navigate("/checkout");
+    } else {
+      // alert("do you want register a user before checkout");
+      setShow(true);
+    }
+  };
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleGoShop = () => {
     navigate("/shop");
   };
   const handleGoCheckout = () => {
-    navigate("/checkout");
+    console.log(activeUserInfor);
+    console.log("thong tin chekc state", statecheck);
+
+    if (activeUserInfor.statusLogin) {
+      navigate("/checkout");
+    } else {
+      alert("do you want register a user before checkout");
+    }
   };
   const statecheck = useSelector((state) => state);
   console.log("thong tin chekc state", statecheck);
@@ -172,10 +203,31 @@ const ShoppingCart = () => {
                 <FcLeft />
                 <span className='ms-1'> Continue shopping</span>
               </button>
-              <button onClick={handleGoCheckout} className='border-0 bg-light'>
+
+              {/* Go to Checkout page or sign in */}
+              <Button
+                variant='primary'
+                className='border-0 bg-light text-dark'
+                onClick={handleShow}
+              >
                 <span className='me-2'>Proceed to checkout</span>
                 <FcRight />
-              </button>
+              </Button>
+
+              <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Check information User</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Do you want to Checkout without Login?</Modal.Body>
+                <Modal.Footer>
+                  <Button variant='secondary' onClick={handleSignIn}>
+                    Sign In
+                  </Button>
+                  <Button variant='primary' onClick={handleCheckout}>
+                    Checkout
+                  </Button>
+                </Modal.Footer>
+              </Modal>
             </div>
           </div>
 

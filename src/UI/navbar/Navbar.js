@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { AiFillCaretDown } from "react-icons/ai";
+import AlertComponent from "../../component/cart/Alert";
 import {
   activeInfor,
   getFromStorage,
@@ -20,6 +21,7 @@ import classes from "./Navbar.module.scss";
 const Navbar = () => {
   // const test = useSelector((state) => state);
   // console.log("test banner", test);
+  const [showModal, setShowModal] = useState(false);
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -85,6 +87,11 @@ const Navbar = () => {
       };
       dispatch(updateCart(initailUpdatedCart));
     }
+
+    setShowModal(true);
+    setTimeout(() => {
+      setShowModal(false);
+    }, 3000);
   };
   console.log("signout test state", test);
   console.log(loginStatus);
@@ -130,12 +137,14 @@ const Navbar = () => {
             </svg>
             <span className=''>Cart</span>
           </button>
-          <span
-            className='badge ms-1 rounded-pill bg-danger d-flex align-items-center justify-content-center'
-            style={{ width: "40px", height: "23px" }}
-          >
-            {addCartProductQuantity || 0}{" "}
-          </span>
+          {location.pathname !== "/" && (
+            <span
+              className='badge ms-1 rounded-pill bg-danger d-flex align-items-center justify-content-center'
+              style={{ width: "40px", height: "23px" }}
+            >
+              {addCartProductQuantity || 0}{" "}
+            </span>
+          )}
         </li>
         <li className={classes.listItem}>
           {/* change style when loginning or not */}
@@ -192,6 +201,9 @@ const Navbar = () => {
       </ul>
       {/* Show detail of active user */}
       {activeUserShow && <ShowDetailActiveUser />}
+      <div className={classes.showModal}>
+        {showModal && <AlertComponent content='successful Logout!' />}
+      </div>
     </div>
   );
 };

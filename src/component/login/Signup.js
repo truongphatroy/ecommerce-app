@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { saveToStorage, userArr, keyOfUserArr } from "../../storage/storage";
-
+import AlertComponent from "../cart/Alert";
 import classes from "./Signup.module.scss";
 import bannerImage from "../../image/banner1.jpg";
 
@@ -12,6 +12,8 @@ const Signup = () => {
   const passwordRef = useRef();
   const phoneRef = useRef();
   const [errorMessage, setErrorMessage] = useState("");
+  const [showModal, setShowModal] = useState(false);
+
   console.log("render");
 
   // Validate function
@@ -79,9 +81,13 @@ const Signup = () => {
       // save to storage web
       saveToStorage(keyOfUserArr, userArr);
       // alert to inform to user
-      alert("Register new user Successful! \n Page navigates to sign in page.");
+      // alert("Register new user Successful! \n Page navigates to sign in page.");
       // Navigate into other page
-      navigate("/signin");
+      setShowModal(true);
+      setTimeout(() => {
+        // navigate("/shop"); // go to shop
+        navigate("/signin");
+      }, 1000);
     }
   };
 
@@ -140,6 +146,9 @@ const Signup = () => {
               <p className='text-danger fs-6 pt-2'>
                 {errorMessage !== "" && errorMessage}
               </p>
+              {showModal && (
+                <AlertComponent content='Congratulations on your successful SIGN UP!' />
+              )}
 
               <p className='text-center mt-2'>
                 Login?{" "}

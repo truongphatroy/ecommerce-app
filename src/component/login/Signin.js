@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { checkExistingUser } from "../../storage/checkUser";
 import { updateCart, signin } from "../../store/actions/action";
-import { cartInfor } from "../../storage/storage";
 import {
   saveToStorage,
   keyOfActiveUser,
   getFromStorage,
 } from "../../storage/storage";
+import AlertComponent from "../cart/Alert";
 import classes from "./Signin.module.scss";
 import bannerImage from "../../image/banner1.jpg";
 
@@ -17,6 +17,7 @@ const Signin = () => {
   const [enteredEmail, setEnterredEmail] = useState("");
   const [enteredPassword, setEnterredPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
 
   const test = useSelector((state) => state);
@@ -80,10 +81,13 @@ const Signin = () => {
           };
           dispatch(updateCart(innitailUpdatedCart));
         }
-
-        navigate("/shop"); // go to shop
+        setShowModal(true);
+        setTimeout(() => {
+          navigate("/shop"); // go to shop
+        }, 1000);
       } else {
         // user not existing
+        setEnterredPassword("");
         setErrorMessage("The user is not existing! Please check again.");
       }
     } else {
@@ -120,6 +124,7 @@ const Signin = () => {
               type='password'
               className={`mb-0 fw-light fs-5 pt-3 pb-3  ${classes.inputForm2}`}
               placeholder='Password'
+              value={enteredPassword}
             />
 
             <div className='mb-4'></div>
@@ -134,6 +139,8 @@ const Signin = () => {
               <p className='text-danger fs-6 pt-2'>
                 {errorMessage !== "" && errorMessage}
               </p>
+              {showModal && <AlertComponent content='successful Login!' />}
+
               <p className='text-center my-5'>
                 Create an account?{" "}
                 <Link className={classes.Link} to='/signup'>
