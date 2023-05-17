@@ -231,3 +231,16 @@ export const reducerLiveChat = (state = iniitialState_Chat, action) => {
       return state;
   }
 };
+
+/* // test
+const iniitialState_counter = 0;
+const counterReducer = (state = iniitialState_counter, action) => {
+  switch (action.type) {
+    case "INCREMENT":
+      return state + action.payload;
+    case "DECREMENT":
+      return state - action.payload;
+    default:
+      return state;
+  }
+}; */

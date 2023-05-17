@@ -9,6 +9,7 @@ import {
   reducerLogin,
   reducerCart,
   reducerLiveChat,
+  // counterReducer,
 } from "./reducer";
 
 const rootReducer = combineReducers({
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   Login: reducerLogin, // For login status
   Cart: reducerCart, // for Cart
   LiveChat: reducerLiveChat, // for live chat
+  // Counter: counterReducer,
 });
 
 export default rootReducer;
