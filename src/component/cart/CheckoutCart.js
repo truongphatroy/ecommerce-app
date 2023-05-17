@@ -11,7 +11,6 @@ const CheckoutCart = () => {
   const orderdProducts = useSelector((state) => state.Cart.items);
   const orderdTotalAmount = useSelector((state) => state.Cart.totalAmount);
   const activeUserEmail = useSelector((state) => state.Login.activeUser.email);
-  const activeStatus = useSelector((state) => state.Login.stateLogin);
   const activeUserInformation = userArr.find(
     (user) => user?.email === activeUserEmail
   );

@@ -11,7 +11,7 @@ const ListImage = () => {
 
   useEffect(() => {
     dispatch(getData());
-  }, []);
+  }, [dispatch]);
 
   const imageList = useSelector((state) =>
     // access to state of store and get 8 first elements

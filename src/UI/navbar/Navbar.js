@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { AiFillCaretDown } from "react-icons/ai";
@@ -25,7 +25,6 @@ const Navbar = () => {
   const location = useLocation(); // for controlling active style
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const test = useSelector((state) => state);
 
   const loginStatus = useSelector((state) => state.Login.stateLogin);
   const activeUser = useSelector((state) => state.Login.activeUser);

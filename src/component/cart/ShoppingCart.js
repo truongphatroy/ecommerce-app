@@ -121,6 +121,7 @@ const ShoppingCart = () => {
                     <th scope='row'>
                       {" "}
                       <img
+                        alt='image'
                         className={classes.banner}
                         style={{
                           backgroundImage: `url(${cartItem?.img})`,

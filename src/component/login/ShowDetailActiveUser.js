@@ -4,7 +4,6 @@ import React from "react";
 import Modal from "../../UI/modal/Modal";
 import Card from "react-bootstrap/Card";
 import CardGroup from "react-bootstrap/CardGroup";
-import Button from "react-bootstrap/Button";
 import { hideDetailActiveUser } from "../../store/actions/action";
 import { MdCancel } from "react-icons/md";
 import { RiUserHeartLine } from "react-icons/ri";
