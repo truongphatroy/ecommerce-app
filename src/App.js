@@ -1,4 +1,5 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+// import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createHashRouter, RouterProvider } from "react-router-dom";
 
 import HomePage from "./page/HomePage";
 import ShopPage from "./page/ShopPage";
@@ -10,7 +11,7 @@ import SignUpPage from "./page/SignUpPage";
 import RootLayout from "./page/RootLayout";
 
 // create a custom route
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
     element: <RootLayout />,
