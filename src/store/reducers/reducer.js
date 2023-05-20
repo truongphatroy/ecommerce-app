@@ -5,12 +5,10 @@ import { saveToStorage, keyOfCartList } from "../../storage/storage";
 const initialState_ListImage = { ListImage: null, loading: false, error: null };
 
 export const reducerProductList = (state = initialState_ListImage, action) => {
-  console.log("reducerProductList");
+  // console.log("reducerProductList");
 
   switch (action.type) {
     case "FETCH_IMAGE_REQUEST":
-      console.log(33);
-
       return {
         ...state,
         loading: true,
@@ -96,7 +94,7 @@ export const reducerShowDetail = (state = iniitialState_ShowDetail, action) => {
 // For update login status
 const initialState_Login = { stateLogin: false, activeUser: {} };
 export const reducerLogin = (state = initialState_Login, action) => {
-  console.log("reducerLogin");
+  // console.log("reducerLogin");
 
   switch (action.type) {
     case "ON_LOGIN":
@@ -133,20 +131,20 @@ const iniitialState_Cart = {
   totalAmount: 0,
 };
 export const reducerCart = (state = iniitialState_Cart, action) => {
-  console.log("reducerCart state", state);
-  console.log("reducerCart action", action);
+  // console.log("reducerCart state", state);
+  // console.log("reducerCart action", action);
 
   if (state) {
     switch (action.type) {
       case "ADD_CART": {
         const updatedTotalAmount =
           state?.totalAmount + action?.item?.price * action?.item?.amount;
-        console.log(updatedTotalAmount);
+        // console.log(updatedTotalAmount);
 
         const existingCartItemIndex = state?.items?.findIndex(
           (item) => item?.id === action?.item?.id
         );
-        console.log(existingCartItemIndex);
+        // console.log(existingCartItemIndex);
 
         const existingCartItem = state?.items?.[existingCartItemIndex];
         let updatedItems;
@@ -159,10 +157,10 @@ export const reducerCart = (state = iniitialState_Cart, action) => {
               action?.item?.price *
               (existingCartItem?.amount + action?.item?.amount),
           };
-          console.log(updatedItems);
+          // console.log(updatedItems);
 
           updatedItems = [...state?.items];
-          console.log(updatedItems);
+          // console.log(updatedItems);
 
           updatedItems[existingCartItemIndex] = updatedItem;
           // if product not existing
@@ -219,11 +217,11 @@ export const reducerCart = (state = iniitialState_Cart, action) => {
 // Livechat
 const iniitialState_Chat = false;
 export const reducerLiveChat = (state = iniitialState_Chat, action) => {
-  console.log("LIVE_CHAT...", action.type);
+  // console.log("LIVE_CHAT...", action.type);
 
   switch (action.type) {
     case "LIVE_CHAT": {
-      console.log("LIVE_CHAT return true");
+      // console.log("LIVE_CHAT return true");
       const temp = state;
       return !temp;
     }
